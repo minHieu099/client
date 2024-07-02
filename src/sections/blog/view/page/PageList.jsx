@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions } from '@mui/material';
+import { Alert, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
 
@@ -12,34 +12,79 @@ function PageList() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const [confirmDelete, setConfirmDelete] = useState(false)
     const [openDialogAdd, setOpenDialogAdd] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false);
+    const [selectedPage, setSelectedPage] = useState(null);
     const [addPage, setAddPage] = useState({
         team_id: id,
         name: '',
         url: '',
         prioritized: false,
     })
+    const [editPage, setEditPage] = useState({
+        page_id: '',
+        new_info: {
+            name: '',
+        },
+    })
+    const fetchPages = async () => {
+        try {
+            const response = await axios.get(`http://192.168.3.101:19999/api/teams/${id}/pages`,
+                { headers: { Authorization: `Bearer ${getToken()}` } });
+            setPageData(response.data);
+
+            const initState = response.data.map(item => ({
+                _id: item._id,
+                prioritized: item.prioritized == true
+            }))
+            setStates(initState)
+        } catch (error) {
+            console.error('Lỗi:', error);
+            setError('Tải dữ liệu thất bại, vui lòng thử lại sau.');
+        }
+    };
+    //hiển thị dữ liệu
     useEffect(() => {
-        const fetchPages = async () => {
-            try {
-                const response = await axios.get(`http://192.168.3.101:19999/api/teams/${id}/pages`,
-                    { headers: { Authorization: `Bearer ${getToken()}` } });
-                setPageData(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching page data:', error);
-                setError('Failed to fetch data. Please try again later.');
-            }
-        };
-
         fetchPages();
-    }, [id]);
+    }, [id, fetchPages]);
 
+    //toggle bật tắt
+    const [states, setStates] = useState([]);
+    const OnOff = async (id) => {
+        const updatedStates = states.map(row => {
+            if (row._id === id) {
+                return {
+                    ...row,
+                    prioritized: !row.prioritized
+                }
+            }
+            return row;
+        })
+        // Cập nhật trạng thái trong React state trước
+        setStates(updatedStates);
+
+        const updatedRow = updatedStates.find(row => row._id === id);
+        try {
+            // Gửi yêu cầu PUT tới server
+            const response = await axios.put(`http://192.168.3.101:19999/api/pages/update/priority`, {
+                page_id: updatedRow._id,
+                prioritized: updatedRow.prioritized
+            }, { headers: { Authorization: `Bearer ${getToken()}` } });
+
+            if (response.status !== 200) {
+                throw new Error('Lỗi khi cập nhật dữ liệu trên server');
+            }
+        } catch (error) {
+            console.error('Lỗi:', error);
+            // Khôi phục lại trạng thái ban đầu nếu có lỗi xảy ra
+            setStates(states);
+        }
+    }
     //open dialog add page
     const dialogAddPage = () => {
         setOpenDialogAdd(true)
     }
+    //nhập giá trị bổ sung trang
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setAddPage(prevState => ({
@@ -50,6 +95,7 @@ function PageList() {
     const handleDialogClose = () => {
         setOpenDialogAdd(false)
     }
+    //xử lý lưu trang mới
     const handleSaveAdd = async () => {
         setLoading(true);
         setError(null);
@@ -60,28 +106,97 @@ function PageList() {
                 [addPage],
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            console.log(response.data);
-            router.reload();
+            handleShowToast('Thêm thành công!', 'success');
+            fetchPages();
             handleDialogClose();
         } catch (error) {
+            handleShowToast('Thêm thất bại!', 'error');
             setError(error.message);
-            console.error('Error:', error);
         } finally {
             setLoading(false);
         }
     }
 
+    //sửa thông tin trang
+    const handleEditPage = (page) => {
+        setSelectedPage(page)
+        setEditPage({
+            page_id: page._id,
+            new_info: {
+                name: page.name,
+                url: page.url,
+                prioritized: false,
+            }
+        })
+        setOpenEdit(true)
+    }
+    const closeEditDialog = () => {
+        setOpenEdit(false)
+    }
+    const handleInputChangeEdit = (page) => {
+        const { name, value } = page.target;
+        setEditPage(prevState => ({
+            ...prevState,
+            new_info: {
+                ...prevState.new_info,
+                [name]: value
+            }
+        }));
+    }
+    const handleSaveEdit = async () => {
+        try {
+            await axios.put(
+                'http://192.168.3.101:19999/api/pages/update',
+                editPage,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            handleShowToast('Sửa thành công!', 'success');
+            fetchPages();
+            closeEditDialog();
+        } catch (error) {
+            setError(error.message);
+            handleShowToast('Sửa thất bại!', 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const [confirmDelete, setConfirmDelete] = useState(false)
+    const [idDelete, setIdDelete] = useState(null);
+    //mở dialog confirm delete
+    const dialogConfirmDelete = (page) => {
+        setIdDelete(page)
+        setConfirmDelete(true)
+    }
+    const handleDialogDeleteClose = () => {
+        setConfirmDelete(false)
+    }
     const handleConfirmDelete = async () => {
         try {
-            await axios.delete(`http://192.168.3.101:19999/api/pages/${pageToDelete._id}`, {
+            await axios.delete(`http://192.168.3.101:19999/api/pages/${idDelete}`, {
                 headers: { Authorization: `Bearer ${getToken()}` }
             });
-            router.reload();
+            fetchPages();
+            handleShowToast('Xoá thành công!', 'success');
             handleDialogDeleteClose();
         } catch (error) {
+            handleShowToast('Xoá thất bại!', 'error');
             console.error('Error deleting page:', error);
         }
     };
+
+    const [toast, setToast] = useState({
+        open: false,
+        message: '',
+        severity: 'success',
+    });
+    const handleShowToast = (message, severity) => {
+        setToast({ open: true, message, severity });
+    };
+    const handleCloseToast = () => {
+        setToast({ ...toast, open: false });
+    };
+
     return (
         <Container>
             <Typography variant="h4" component="h1" gutterBottom>
@@ -92,6 +207,8 @@ function PageList() {
                 color="primary"
                 style={{ marginBottom: '10px' }}
                 onClick={dialogAddPage}
+            // onClick={() => handleShowToast('Thêm thành công!', 'success')}
+
             >
                 Thêm trang mới
             </Button>
@@ -100,23 +217,30 @@ function PageList() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>TT</TableCell>
-                            <TableCell>Tên trang</TableCell>
-                            <TableCell>Đường dẫn</TableCell>
-                            <TableCell>Chức năng</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>TT</TableCell>
+                            <TableCell align="center" style={{ width: '15%' }}>Trạng thái</TableCell>
+                            <TableCell align="center" style={{ width: '15%' }}>Tên trang</TableCell>
+                            <TableCell align="center" style={{ width: '25%' }}>Đường dẫn</TableCell>
+                            <TableCell align="center" style={{ width: '35%' }}>Chức năng</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {pageData.map((row, index) => (
                             <TableRow key={row._id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{row.name}</TableCell>
-                                <TableCell><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
-                                <TableCell>
+                                <TableCell align="center">{index + 1}</TableCell>
+                                <TableCell align="center">{states[index].prioritized ? "Ưu tiên" : "Không ưu tiên"}</TableCell>
+                                <TableCell align="center">{row.name}</TableCell>
+                                <TableCell align="center"><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
+                                <TableCell align="center">
+                                    <Switch
+                                        checked={states[index]?.prioritized}
+                                        onChange={() => OnOff(row._id)}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => handleEditOpen(staff)}
+                                        onClick={() => handleEditPage(row)}
                                         style={{ marginRight: '10px' }}
                                     >
                                         Sửa
@@ -124,7 +248,7 @@ function PageList() {
                                     <Button
                                         variant="contained"
                                         color="secondary"
-                                        onClick={() => handleDelete(staff._id)}
+                                        onClick={() => dialogConfirmDelete(row._id)}
                                     >
                                         Xoá
                                     </Button>
@@ -134,14 +258,35 @@ function PageList() {
                     </TableBody>
                 </Table>
             </TableContainer>
+
             <DialogAddPage
                 openDialogAdd={openDialogAdd}
-                onClick={dialogAddPage}
                 handleInputChange={handleInputChange}
                 handleDialogClose={handleDialogClose}
                 handleSaveAdd={handleSaveAdd}
                 addPage={addPage}
             ></DialogAddPage>
+
+            <DialogDelete
+                confirmDelete={confirmDelete}
+                handleConfirmDelete={handleConfirmDelete}
+                handleDialogDeleteClose={handleDialogDeleteClose}
+            ></DialogDelete>
+
+            <DialogEdit
+                openEdit={openEdit}
+                closeEditDialog={closeEditDialog}
+                handleSaveEdit={handleSaveEdit}
+                selectedPage={selectedPage}
+                handleInputChangeEdit={handleInputChangeEdit}
+            ></DialogEdit>
+
+            <Toast
+                open={toast.open}
+                onClose={handleCloseToast}
+                message={toast.message}
+                severity={toast.severity}
+            />
         </Container>
     );
 }
@@ -178,22 +323,67 @@ const DialogAddPage = ({ openDialogAdd, handleDialogClose, handleSaveAdd, handle
         </DialogActions>
     </Dialog>
 );
-const DialogDelete = ({ openDialogAdd, handleDialogClose, handleSaveAdd, handleInputChange, }) => (
-    <Dialog open={openDialogDelete} onClose={handleDialogDeleteClose}>
-                <DialogTitle>Xác nhận xóa</DialogTitle>
-                <DialogContent>
-                    <Typography>Bạn có chắc chắn muốn xóa trang này không?</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogDeleteClose} color="primary">
-                        Hủy
-                    </Button>
-                    <Button onClick={handleConfirmDelete} color="secondary">
-                        Xóa
-                    </Button>
-                </DialogActions>
-            </Dialog>
+const DialogDelete = ({ confirmDelete, handleDialogDeleteClose, handleConfirmDelete }) => (
+    <Dialog open={confirmDelete} onClose={handleDialogDeleteClose}>
+        <DialogTitle>Xác nhận xóa</DialogTitle>
+        <DialogContent>
+            <Typography>Bạn có chắc chắn muốn xóa trang này không?</Typography>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleDialogDeleteClose} color="primary">
+                Hủy
+            </Button>
+            <Button onClick={handleConfirmDelete} color="secondary">
+                Xóa
+            </Button>
+        </DialogActions>
+    </Dialog>
 );
-
+const DialogEdit = ({ openEdit, closeEditDialog, handleInputChangeEdit, handleSaveEdit, selectedPage }) => (
+    <Dialog open={openEdit} onClose={closeEditDialog}>
+        <DialogTitle>Sửa thông tin trang</DialogTitle>
+        <DialogContent>
+            <TextField
+                autoFocus
+                margin="dense"
+                name="name"
+                label="Tên trang"
+                type="text"
+                fullWidth
+                defaultValue={selectedPage?.name || ''}
+                onChange={(e) => handleInputChangeEdit(e)}
+            />
+            <TextField
+                margin="dense"
+                name="url"
+                label="Đường dẫn"
+                type="text"
+                fullWidth
+                defaultValue={selectedPage?.url || ''}
+                onChange={(e) => handleInputChangeEdit(e)}
+            />
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={closeEditDialog} color="primary">
+                Hủy
+            </Button>
+            <Button onClick={handleSaveEdit} color="primary">
+                Lưu
+            </Button>
+        </DialogActions>
+    </Dialog>
+);
+const Toast = ({ open, onClose, message, severity }) => (
+    <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={onClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
+        <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
+            {message}
+        </Alert>
+    </Snackbar>
+);
 
 export default PageList;
