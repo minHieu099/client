@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import {
-  Container,
+  Alert,
   Button,
-  Typography,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
 
@@ -45,21 +47,20 @@ function StaffList() {
 
   const router = useRouter();
   // Fetch staff data
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://192.168.3.101:19999/api/teams/${id}/profiles`, {
+        headers: { Authorization: `Bearer ${getToken()}` }
+      });
+      setStaffList(response.data);
+    } catch (error) {
+      console.error('Error fetching staff data:', error);
+      setError('Failed to fetch data. Please try again later.');
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://192.168.3.101:19999/api/teams/${id}/profiles`, {
-          headers: { Authorization: `Bearer ${getToken()}` }
-        });
-        setStaffList(response.data);
-      } catch (error) {
-        console.error('Error fetching staff data:', error);
-        setError('Failed to fetch data. Please try again later.');
-      }
-    };
-
     fetchData(); // Gọi fetchData khi component mount và khi id thay đổi
-  }, [id]);
+  }, [id, fetchData]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -69,7 +70,6 @@ function StaffList() {
       [name]: value
     }));
   };
-
   const handleInputChangeEdit = (e) => {
     const { name, value } = e.target;
     setEditStaffDialog(prevState => ({
@@ -85,12 +85,31 @@ function StaffList() {
   const handleAddStaffOpen = () => {
     setOpenAdd(true);
   };
-
   // Handle dialog close
   const handleDialogClose = () => {
     setOpenAdd(false);
     setOpenEdit(false);
     setSelectedStaff(null);
+  };
+  // Handle save add
+  const handleSaveAdd = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await axios.post(
+        'http://192.168.3.101:19999/api/profiles/new',
+        [addStaffDialog],  // Gửi dữ liệu từ state addStaffDialog lên server
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchData();
+      handleShowToast('Thêm thành công!', 'success');
+      handleDialogClose();
+    } catch (error) {
+      setError(error.message);
+      handleShowToast('Thêm thất bại!', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Open edit staff dialog
@@ -116,59 +135,62 @@ function StaffList() {
         editStaffDialog,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      router.reload();
+      handleShowToast('Sửa thành công!', 'success');
+      fetchData()
       handleDialogClose();
     } catch (error) {
       setError(error.message);
-      console.error('Error:', error);
+      handleShowToast('Xoá thất bại!', 'error');
     } finally {
       setLoading(false);
     }
   };
-
-  // Handle save add
-  const handleSaveAdd = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      // Lấy token từ nơi nào đó
-      const response = await axios.post(
-        'http://192.168.3.101:19999/api/profiles/new',
-        [addStaffDialog],  // Gửi dữ liệu từ state addStaffDialog lên server
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      router.reload();
-      handleDialogClose();
-    } catch (error) {
-      setError(error.message);
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [idDelete, setIdDelete] = useState(null);
+  //mở dialog confirm delete
+  const dialogConfirmDelete = (idDel) => {
+    setIdDelete(idDel)
+    setConfirmDelete(true)
+  }
+  const handleDialogDeleteClose = () => {
+    setConfirmDelete(false)
+  }
   // Handle delete staff
-  const handleDelete = async (staffId) => {
-    console.log(staffId);
+  const handleConfirmDelete = async () => {
     try {
       await axios.delete(
-        `http://192.168.3.101:19999/api/profiles/${staffId}`,
+        `http://192.168.3.101:19999/api/profiles/${idDelete}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      router.reload();
+      fetchData()
+      handleDialogDeleteClose()
+      handleShowToast('Xoá thành công!', 'success');
     } catch (error) {
       setError(error.message);
-      console.error('Error:', error);
+      handleShowToast('Xoá thất bại!', 'error');
     } finally {
       setLoading(false);
     }
+  };
+
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+  const handleShowToast = (message, severity) => {
+    setToast({ open: true, message, severity });
+  };
+  const handleCloseToast = () => {
+    setToast({ ...toast, open: false });
   };
 
   return (
     <Container>
       <Header handleAddStaffOpen={handleAddStaffOpen} />
       {error && <Typography color="error">{error}</Typography>}
-      {!error && <StaffTable staffList={staffList} handleEditOpen={handleEditOpen} handleDelete={handleDelete} />}
+      {!error && <StaffTable dialogConfirmDelete={dialogConfirmDelete} staffList={staffList} handleEditOpen={handleEditOpen} />}
       <EditDialog
         openEdit={openEdit}
         selectedStaff={selectedStaff}
@@ -182,6 +204,18 @@ function StaffList() {
         handleDialogClose={handleDialogClose}
         handleSaveAdd={handleSaveAdd}
         handleInputChange={handleInputChange}
+      />
+      <DialogDelete
+        confirmDelete={confirmDelete}
+        dialogConfirmDelete={dialogConfirmDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        handleDialogDeleteClose={handleDialogDeleteClose}
+      ></DialogDelete>
+      <Toast
+        open={toast.open}
+        onClose={handleCloseToast}
+        message={toast.message}
+        severity={toast.severity}
       />
     </Container>
   );
@@ -199,19 +233,19 @@ const Header = ({ handleAddStaffOpen }) => (
       style={{ marginBottom: '10px' }}
       onClick={handleAddStaffOpen}
     >
-      Bổ sung cán bộ
+      Bổ sung chủ tài khoản
     </Button>
   </>
 );
 
 // StaffTable component
-const StaffTable = ({ staffList, handleEditOpen, handleDelete }) => (
+const StaffTable = ({ staffList, handleEditOpen, dialogConfirmDelete }) => (
   <TableContainer component={Paper}>
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>TT</TableCell>
-          <TableCell>Tên cán bộ</TableCell>
+          <TableCell>Chủ tài khoản</TableCell>
           <TableCell>Đường dẫn</TableCell>
           <TableCell>Chức năng</TableCell>
         </TableRow>
@@ -236,7 +270,7 @@ const StaffTable = ({ staffList, handleEditOpen, handleDelete }) => (
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => handleDelete(staff._id)}
+                onClick={() => dialogConfirmDelete(staff._id)}
               >
                 Xoá
               </Button>
@@ -249,7 +283,7 @@ const StaffTable = ({ staffList, handleEditOpen, handleDelete }) => (
 );
 
 // EditDialog component
-const EditDialog = ({ openEdit, selectedStaff, handleDialogClose, handleSaveEdit, handleInputChangeEdit, editStaffDialog }) => (
+const EditDialog = ({ openEdit, selectedStaff, handleDialogClose, handleSaveEdit, handleInputChangeEdit }) => (
 
   <Dialog open={openEdit} onClose={handleDialogClose}>
     <DialogTitle>Sửa thông tin cán bộ</DialogTitle>
@@ -288,24 +322,15 @@ const EditDialog = ({ openEdit, selectedStaff, handleDialogClose, handleSaveEdit
 );
 
 // AddDialog component
-const AddDialog = ({ openAdd, addStaffDialog, handleDialogClose, handleSaveAdd, handleInputChange, }) => (
+const AddDialog = ({ openAdd, handleDialogClose, handleSaveAdd, handleInputChange, }) => (
   <Dialog open={openAdd} onClose={handleDialogClose}>
-    <DialogTitle>Thêm người mới</DialogTitle>
+    <DialogTitle>Thêm tài khoản mới</DialogTitle>
     <DialogContent>
       <TextField
         autoFocus
         margin="dense"
         name="fullname"
         label="Tên cán bộ"
-        type="text"
-        fullWidth
-
-        onChange={(e) => handleInputChange(e)}
-      />
-      <TextField
-        margin="dense"
-        name="profile_name"
-        label="Tên facebook"
         type="text"
         fullWidth
         onChange={(e) => handleInputChange(e)}
@@ -328,6 +353,36 @@ const AddDialog = ({ openAdd, addStaffDialog, handleDialogClose, handleSaveAdd, 
       </Button>
     </DialogActions>
   </Dialog>
+);
+
+const DialogDelete = ({ confirmDelete, handleDialogDeleteClose, handleConfirmDelete }) => (
+  <Dialog open={confirmDelete} onClose={handleDialogDeleteClose}>
+    <DialogTitle>Xác nhận xóa</DialogTitle>
+    <DialogContent>
+      <Typography>Bạn có chắc chắn muốn xóa trang này không?</Typography>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleDialogDeleteClose} color="primary">
+        Hủy
+      </Button>
+      <Button onClick={handleConfirmDelete} color="secondary">
+        Xóa
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
+
+const Toast = ({ open, onClose, message, severity }) => (
+  <Snackbar
+    open={open}
+    autoHideDuration={3000}
+    onClose={onClose}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+  >
+    <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
+      {message}
+    </Alert>
+  </Snackbar>
 );
 
 export default StaffList;
