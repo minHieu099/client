@@ -8,7 +8,8 @@ export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
-export const CheckPage = lazy(() => import('src/pages/check'));
+export const CheckPost = lazy(() => import('src/pages/check'));
+export const CheckPages = lazy(() => import('src/pages/checkpages'));
 export const StaffPage = lazy(() => import('src/pages/staff'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -37,7 +38,8 @@ export default function Router() {
         },
         { path: 'dvtt/staff/:id', element: <StaffPage /> },
         { path: 'dvtt/pages/:id', element: <PageList /> },
-        { path: 'check', element: <CheckPage /> },
+        { path: 'checkpost', element: <CheckPost /> },
+        { path: 'checkpages', element: <CheckPages /> },
         { path: 'progress', element: <Progress/> }
       ]
     },

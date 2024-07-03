@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { CheckView } from 'src/sections/check';
 // ----------------------------------------------------------------------
 
-export default function CheckPage() {
+export default function CheckPost() {
   return (
     <>
       <Helmet>

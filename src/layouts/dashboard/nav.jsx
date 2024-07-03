@@ -16,6 +16,7 @@ import { usePathname } from 'src/routes/hooks';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import { textAlign } from '@mui/system';
 
 // ----------------------------------------------------------------------
 
@@ -77,9 +78,10 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-      {renderAccount}
+      {/* {renderAccount} */}
 
-      {renderMenu}
+      <Box sx={{ mt: 3 }}>{renderMenu} </Box>
+
 
       <Box sx={{ flexGrow: 1 }} />
 

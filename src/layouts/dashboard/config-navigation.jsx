@@ -18,8 +18,13 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'kiểm tra',
-    path: '/check',
+    title: 'kiểm tra bài viết',
+    path: '/checkpost',
+    icon: icon('ic_blog'),
+  },
+  {
+    title: 'kiểm tra trang',
+    path: '/checkpages',
     icon: icon('ic_blog'),
   },
   {

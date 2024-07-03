@@ -25,9 +25,7 @@ export default function CheckView() {
 
   return (
     <CustomContainer>
-      <Typography variant="h4" align="center" sx={{ color: 'red' }}>
-        Hệ thống quản lý, giám sát tương tác các kênh truyền thông MXH Facebook
-      </Typography>
+
 
       <Box mt={4}>
         <MenuButton setSelectedMenuItem={setSelectedMenuItem} />

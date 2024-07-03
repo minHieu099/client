@@ -21,7 +21,7 @@ export default function PostInWeek({ title, subheader, chart, ...other }) {
     },
     labels,
     xaxis: {
-      type: 'datetime',
+      type: 'string',
     },
     tooltip: {
       shared: true,

@@ -60,9 +60,9 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
     tooltip: {
       fillSeriesColor: false,
       y: {
-        formatter: (value) => fNumber(value),
+        formatter: (value) => `${fNumber(value)} tin bài`,
         title: {
-          formatter: (seriesName) => `${seriesName}`,
+          formatter: (seriesName) => `${seriesName}:`,
         },
       },
     },
