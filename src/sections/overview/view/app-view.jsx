@@ -20,21 +20,41 @@ export default function AppView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // useEffect(() => {
+  //   axios.get(apiEndpoint, {
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`
+  //     }
+  //   })
+  //     .then(response => {
+  //       setData(response.data);
+  //       setLoading(false);
+  //     })
+  //     .catch(error => {
+  //       setError(error);
+  //       setLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    axios.get(apiEndpoint, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(response => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
+  const fetchData = async () => {
+    const token = getToken();
+    try {
+      const response = await axios.get(apiEndpoint, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
-  }, []);
+      setData(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
 
   if (loading) {
     return <Typography>Loading...</Typography>;

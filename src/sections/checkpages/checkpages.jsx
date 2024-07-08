@@ -209,14 +209,15 @@ export default function PageCheckTable() {
     setSelectedJobId(null);
   };
   return (
-    <Container>
+    
+    <Container sx={{ml: 0.6}}>
       <Button
         aria-controls="unit-menu"
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
         color="primary"
-        sx={{ mt: 2, mb: 2, ml: 2 }}
+        sx={{ mt: 2}}
       >
         Chọn đơn vị
       </Button>

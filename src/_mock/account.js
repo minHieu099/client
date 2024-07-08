@@ -3,7 +3,7 @@
 import { getFullname, getUsername } from "src/routes/auth";
 
 export const account = {
-  fullname: "Nguyễn Trọng Phương",
-  username: 'phuongnt_cm22',
+  fullname: getFullname(),
+  username: getUsername(),
   photoURL: '/assets/images/avatars/avatar_25.jpg',
 };

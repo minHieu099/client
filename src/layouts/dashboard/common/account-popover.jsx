@@ -1,46 +1,21 @@
 import { useState } from 'react';
 
-import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
 import Popover from '@mui/material/Popover';
 import { alpha } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { account } from 'src/_mock/account';
-import { removeToken, removeUsername, setFullname, setUsername, getFullname } from 'src/routes/auth';
+import { removeToken, removeUsername } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
-import { useLocation } from 'react-router-dom';
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-  // {
-  //   label: 'Home',
-  //   icon: 'eva:home-fill',
-  // },
-  // {
-  //   label: 'Profile',
-  //   icon: 'eva:person-fill',
-  // },
-  // {
-  //   label: 'Settings',
-  //   icon: 'eva:settings-2-fill',
-  // },
-];
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const location = useLocation();
   const router = useRouter();
   const [open, setOpen] = useState(null);
-  // const { username } = location.state||  'User';
-  // const { fullname } = location.state||  'Name';
-  // setFullname(fullname);
-  // setUsername(username);
-
-  // alert(fullname.charAt(0).toUpperCase())
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -78,7 +53,6 @@ export default function AccountPopover() {
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {getFullname().charAt(0).toUpperCase() ? 'Nguyen Minh Hieu' : fullname.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -107,12 +81,6 @@ export default function AccountPopover() {
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
-            {option.label}
-          </MenuItem>
-        ))}
 
         <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
 
