@@ -47,7 +47,7 @@ export const removeFullname = () => {
 // Function to handle login (including storing token)
 export const login = (token, username, fullname) => {
     setToken(token);
-    alert(username, fullname);
+    // alert(username, fullname);
     setUsername(username)
     setFullname(fullname)
 };

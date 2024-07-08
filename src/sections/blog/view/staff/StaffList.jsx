@@ -20,6 +20,7 @@ import {
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Iconify from 'src/components/iconify';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
 
@@ -60,7 +61,7 @@ function StaffList() {
   };
   useEffect(() => {
     fetchData(); // Gọi fetchData khi component mount và khi id thay đổi
-  }, [id, fetchData]);
+  }, [id]);
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -145,7 +146,7 @@ function StaffList() {
       setLoading(false);
     }
   };
-  
+
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [idDelete, setIdDelete] = useState(null);
   //mở dialog confirm delete
@@ -232,8 +233,7 @@ const Header = ({ handleAddStaffOpen }) => (
       color="primary"
       style={{ marginBottom: '10px' }}
       onClick={handleAddStaffOpen}
-    >
-      Bổ sung chủ tài khoản
+    ><Iconify icon="eva:plus-fill" />
     </Button>
   </>
 );
@@ -264,15 +264,13 @@ const StaffTable = ({ staffList, handleEditOpen, dialogConfirmDelete }) => (
                 color="primary"
                 onClick={() => handleEditOpen(staff)}
                 style={{ marginRight: '10px' }}
-              >
-                Sửa
+              ><Iconify icon="eva:edit-fill" />
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={() => dialogConfirmDelete(staff._id)}
-              >
-                Xoá
+              ><Iconify icon="eva:trash-2-outline" />
               </Button>
             </TableCell>
           </TableRow>

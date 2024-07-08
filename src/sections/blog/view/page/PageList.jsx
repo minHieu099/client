@@ -1,7 +1,9 @@
-import { Alert, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Label } from '@mui/icons-material';
+import { Alert, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Iconify from 'src/components/iconify';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
 
@@ -46,7 +48,7 @@ function PageList() {
     //hiển thị dữ liệu
     useEffect(() => {
         fetchPages();
-    }, [id, fetchPages]);
+    }, [id]);
 
     //toggle bật tắt
     const [states, setStates] = useState([]);
@@ -207,10 +209,7 @@ function PageList() {
                 color="primary"
                 style={{ marginBottom: '10px' }}
                 onClick={dialogAddPage}
-            // onClick={() => handleShowToast('Thêm thành công!', 'success')}
-
-            >
-                Thêm trang mới
+            ><Iconify icon="eva:plus-fill" />
             </Button>
             {error && <Typography color="error">{error}</Typography>}
             <TableContainer component={Paper}>
@@ -228,7 +227,14 @@ function PageList() {
                         {pageData.map((row, index) => (
                             <TableRow key={row._id}>
                                 <TableCell align="center">{index + 1}</TableCell>
-                                <TableCell align="center">{states[index].prioritized ? "Ưu tiên" : "Không ưu tiên"}</TableCell>
+                                <TableCell align="center">
+                                    <Chip
+                                        label={states[index].prioritized ? "Ưu tiên" : "Không ưu tiên"}
+                                        color={states[index].prioritized ? 'primary' : 'default'}
+                                        variant="outlined"
+                                        sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}
+                                    />
+                                </TableCell>
                                 <TableCell align="center">{row.name}</TableCell>
                                 <TableCell align="center"><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
                                 <TableCell align="center">
@@ -242,15 +248,13 @@ function PageList() {
                                         color="primary"
                                         onClick={() => handleEditPage(row)}
                                         style={{ marginRight: '10px' }}
-                                    >
-                                        Sửa
+                                    ><Iconify icon="eva:edit-fill" />
                                     </Button>
                                     <Button
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => dialogConfirmDelete(row._id)}
-                                    >
-                                        Xoá
+                                    ><Iconify icon="eva:trash-2-outline" />
                                     </Button>
                                 </TableCell>
                             </TableRow>

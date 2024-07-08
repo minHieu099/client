@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { CheckViewPages } from 'src/sections/checkpages';
+import { PageCheckTable } from 'src/sections/checkpages';
 // ----------------------------------------------------------------------
 
 export default function CheckPost() {
@@ -9,7 +9,7 @@ export default function CheckPost() {
         <title> Hệ thống quản lý, giám sát tương tác các kênh truyền thông MXH Facebook </title>
       </Helmet>
 
-      <CheckViewPages />
+      <PageCheckTable />
     </>
   );
 }

@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
-import MenuButton from './MenuButton';
 import PostContent from './checkpost/PostContent';
-import PageCheckTable from './checkpage/PageCheckTable';
 
 const CustomContainer = styled(Container)({
   textAlign: 'center',
@@ -21,27 +14,12 @@ const CustomContainer = styled(Container)({
 });
 
 export default function CheckView() {
-  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
   return (
     <CustomContainer>
-
-
-      <Box mt={4}>
-        <MenuButton setSelectedMenuItem={setSelectedMenuItem} />
-      </Box>
-
-      {selectedMenuItem === 'post' && (
         <Box mt={4}>
           <PostContent />
         </Box>
-      )}
-
-      {selectedMenuItem === 'page' && (
-        <Box mt={4}>
-          <PageCheckTable />
-        </Box>
-      )}
     </CustomContainer>
   );
 }

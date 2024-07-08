@@ -1,1 +1,1 @@
-export { default as PageCheckTable } from './checkpage';
+export { default as PageCheckTable } from './checkpages';

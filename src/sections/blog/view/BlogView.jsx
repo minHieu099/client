@@ -4,6 +4,7 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { getToken } from 'src/routes/auth';
+import Iconify from 'src/components/iconify';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   padding: theme.spacing(1.5),
@@ -182,64 +183,57 @@ function BlogView() {
         color="primary"
         style={{ marginBottom: '10px' }}
         onClick={OpenDialogAdd}
-      >
-        Thêm đơn vị mới
+      ><Iconify icon="eva:plus-fill" />
       </Button>
-      {error ? (
-        <Typography variant="h5" color="error" style={{ textAlign: 'center' }}>
-          {error}
-        </Typography>
-      ) : (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <StyledTableHeaderCell>TT</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Đơn vị</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Danh sách</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Chức năng</StyledTableHeaderCell>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableHeaderCell>TT</StyledTableHeaderCell>
+              <StyledTableHeaderCell>Đơn vị</StyledTableHeaderCell>
+              <StyledTableHeaderCell>Danh sách</StyledTableHeaderCell>
+              <StyledTableHeaderCell>Chức năng</StyledTableHeaderCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {unitData.map((row, index) => (
+              <TableRow key={row._id}>
+                <StyledTableCell>{index + 1}</StyledTableCell>
+                <StyledTableCell>{row.name}</StyledTableCell>
+                <StyledTableCell>
+                  <Link to={`/dvtt/staff/${row._id}`}>
+                    <StyledButton variant="contained" color="primary">
+                      Danh sách cán bộ
+                    </StyledButton>
+                  </Link>
+                  <Link to={`/dvtt/pages/${row._id}`}>
+                    <Button variant="contained" color="secondary">
+                      Danh sách trang
+                    </Button>
+                  </Link>
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => OpenDialogEdit(row)}
+                    style={{ marginRight: '10px' }}
+                  ><Iconify icon="eva:edit-fill" />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => OpenDialogDel(row._id)}
+                  ><Iconify icon="eva:trash-2-outline" />
+                  </Button>
+                </StyledTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {unitData.map((row, index) => (
-                <TableRow key={row._id}>
-                  <StyledTableCell>{index + 1}</StyledTableCell>
-                  <StyledTableCell>{row.name}</StyledTableCell>
-                  <StyledTableCell>
-                    <Link to={`/dvtt/staff/${row._id}`}>
-                      <StyledButton variant="contained" color="primary">
-                        Danh sách cán bộ
-                      </StyledButton>
-                    </Link>
-                    <Link to={`/dvtt/pages/${row._id}`}>
-                      <Button variant="contained" color="secondary">
-                        Danh sách trang
-                      </Button>
-                    </Link>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => OpenDialogEdit(row)}
-                      style={{ marginRight: '10px' }}
-                    >
-                      Sửa
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => OpenDialogDel(row._id)}
-                    >
-                      Xoá
-                    </Button>
-                  </StyledTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
 
       <AddDonVi
         openDialogAdd={openDialogAdd}
@@ -269,6 +263,7 @@ function BlogView() {
         message={toast.message}
         severity={toast.severity}
       />
+
     </Container>
   );
 }

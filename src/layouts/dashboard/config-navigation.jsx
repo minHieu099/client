@@ -32,11 +32,11 @@ const navConfig = [
     path: '/user',
     icon: icon('ic_user'),
   },
-  {
-    title: 'Tiến độ công việc',
-    path: '/progress',
-    icon: icon('ic_user'),
-  }
+  // {
+  //   title: 'Tiến độ công việc',
+  //   path: '/progress',
+  //   icon: icon('ic_user'),
+  // }
 ];
 
 export default navConfig;

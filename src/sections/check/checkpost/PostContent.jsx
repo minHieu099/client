@@ -97,13 +97,13 @@ export default function PostContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://192.168.3.101:19999/api/jobs`, {
+        const response = await axios.get(`http://192.168.3.101:19999/api/jobs?type=post`, {
           headers: { Authorization: `Bearer ${getToken()}` },
         });
         setJobs(response.data);
       } catch (error) {
         console.error('Error fetching progress data:', error);
-        setError('Failed to fetch data. Please try again later.');
+        setError('Tải dữ liệu thất bại, vui lòng thử lại sau.');
       }
     };
 
@@ -122,7 +122,7 @@ export default function PostContent() {
   return (
     <>
       <Container>
-        <Box display="flex" justifyContent="flex-end" marginTop={2} marginBottom={2}>
+        <Box display="flex" justifyContent="flex" marginTop={2} marginBottom={2}>
           <Button variant="contained" color="primary" onClick={handleOpenDialog}>
             Tạo kiểm tra mới
           </Button>
@@ -132,14 +132,13 @@ export default function PostContent() {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell>Job ID</StyledTableCell>
-                <StyledTableCell>Description</StyledTableCell>
-                
-                <StyledTableCell align="right">Total</StyledTableCell>
-                <StyledTableCell align="right">Status</StyledTableCell>
-                <StyledTableCell align="right">Created At</StyledTableCell>
-                <StyledTableCell align="right">Updated At</StyledTableCell>
-                <StyledTableCell align="right">Action</StyledTableCell>
+                <StyledTableCell>ID yêu cầu</StyledTableCell>
+                <StyledTableCell>Mô tả</StyledTableCell>
+                <StyledTableCell align="right">Tổng</StyledTableCell>
+                <StyledTableCell align="right">Trạng thái</StyledTableCell>
+                <StyledTableCell align="right">Ngày tạo</StyledTableCell>
+                <StyledTableCell align="right">Ngày cập nhật</StyledTableCell>
+                <StyledTableCell align="right">Hành động</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>

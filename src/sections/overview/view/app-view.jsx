@@ -12,7 +12,7 @@ import AppWidgetSummary from '../app-widget-summary';
 import { getFullname, getToken } from 'src/routes/auth';
 import label from 'src/components/label';
 
-const apiEndpoint = 'http://192.168.3.101:19999/api/committees/stats';
+const apiEndpoint = 'http://192.168.3.101:19999/api/stats';
 const token = getToken();
 
 export default function AppView() {
@@ -65,7 +65,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Tài khoản Facebook"
-            total={data.committee_data.pages}
+            total={data.committee_data.profiles}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
           />
@@ -74,7 +74,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Kênh truyền thông"
-            total={data.committee_data.profiles}
+            total={data.committee_data.pages}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
