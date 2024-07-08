@@ -102,7 +102,6 @@ export default function PostContent() {
         });
         setJobs(response.data);
       } catch (error) {
-        console.error('Error fetching progress data:', error);
         setError('Tải dữ liệu thất bại, vui lòng thử lại sau.');
       }
     };

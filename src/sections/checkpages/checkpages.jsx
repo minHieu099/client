@@ -1,10 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Menu, MenuItem, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, Checkbox, Container, DialogActions, FormControlLabel, TextField, DialogTitle, Dialog, DialogContent, DialogContentText } from '@mui/material';
+import { Button, Menu, MenuItem, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, Checkbox, Container, DialogActions, FormControlLabel, TextField, DialogTitle, Dialog, DialogContent, DialogContentText, Typography, CircularProgress, TablePagination } from '@mui/material';
 import axios from 'axios';
 import { getToken } from 'src/routes/auth';
 import styled from 'styled-components';
 import { Box } from '@mui/system';
 import JobDetailsModal from '../check/progress/view/jobDetailModal';
+import { initializeWebSocket } from 'src/hooks/ws';
+
+const StyledTableContainer = styled(TableContainer)({
+  marginTop: '20px',
+  boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+});
+
+const StyledTableCell = styled(TableCell)({
+  fontWeight: 'bold',
+  backgroundColor: '#f4f4f4',
+});
+
+const StyledTableRow = styled(TableRow)({
+  '&:nth-of-type(odd)': {
+    backgroundColor: '#f9f9f9',
+  },
+  '&:hover': {
+    backgroundColor: '#f1f1f1',
+  },
+});
+
+const ProgressWithLabel = ({ value }) => {
+  return (
+    <Box position="relative" display="inline-flex">
+      <CircularProgress variant="determinate" value={value} />
+      <Box
+        top={0}
+        left={0}
+        bottom={0}
+        right={0}
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Typography variant="caption" component="div" color="textSecondary">
+          {`${Math.round(value)}%`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 
 export default function PageCheckTable() {
   const [units, setUnits] = useState([]);
@@ -106,7 +148,7 @@ export default function PageCheckTable() {
       [name]: val
     });
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { description, post_per_target, quick_mode } = formData;
     const requestData = {
       targets: selectedPageUrls, // Use the selectedPageUrls directly
@@ -117,7 +159,7 @@ export default function PageCheckTable() {
 
     console.log('Request Data:', requestData);
 
-    axios.post('http://192.168.3.101:19999/api/crawl/page', requestData, {
+    await axios.post('http://192.168.3.101:19999/api/crawl/page', requestData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
       .then(response => {
@@ -126,22 +168,46 @@ export default function PageCheckTable() {
       .catch(error => {
         console.error('API Error:', error);
       });
+    alert('Task submitted successfully!');
+
     CloseDialog();
   };
 
   //get API bảng
   const [dataCrawl, setDataCrawl] = useState([]);
+
   useEffect(() => {
-
-    axios.get('http://192.168.3.101:19999/api/jobs?type=page', { headers: { Authorization: `Bearer ${getToken()}` } })
-      .then((response) => {
+    const fetchDataPage = async () => {
+      try {
+        const response = await axios.get('http://192.168.3.101:19999/api/jobs?type=page', { headers: { Authorization: `Bearer ${getToken()}` } })
         setDataCrawl(response.data);
-      })
-      .catch((error) => {
-        console.error('Lỗi khi gọi API:', error);
-      });
-  }, []);
+      } catch (error) {
+        setError('Tải dữ liệu thất bại, vui lòng thử lại sau.');
+      }
+    }
+    fetchDataPage();
+    const cleanupWebSocket = initializeWebSocket(
+      (payload) => {
+        fetchDataPage();
+      },
+      () => { }
+    );
+    return () => {
+      cleanupWebSocket();
+    };
+  }, [openDialogCheck]);
 
+  //xem chi tiết
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState(null);
+  const handleButtonClick = (jobId) => {
+    setSelectedJobId(jobId);
+    setModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedJobId(null);
+  };
   return (
     <Container>
       <Button
@@ -150,7 +216,7 @@ export default function PageCheckTable() {
         onClick={handleClick}
         variant="contained"
         color="primary"
-        sx={{ mt: 2, mb: 2, mx: 'auto', display: 'block' }}
+        sx={{ mt: 2, mb: 2, ml: 2 }}
       >
         Chọn đơn vị
       </Button>
@@ -177,7 +243,7 @@ export default function PageCheckTable() {
           >
             Kiểm tra trang đã chọn
           </Button>
-          <TableContainer component={Paper}>
+          <StyledTableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -211,19 +277,30 @@ export default function PageCheckTable() {
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
+          </StyledTableContainer>
         </div>
       )}
-      <DialogCheck open={openDialogCheck} CloseDialog={CloseDialog} selectedPageUrls={selectedPageUrls} handleSubmit={handleSubmit} handleChange={handleChange} />
+      <DialogCheck openDialogCheck={openDialogCheck} CloseDialog={CloseDialog} selectedPageUrls={selectedPageUrls} handleSubmit={handleSubmit} handleChange={handleChange} />
 
-      <RequestTable dataCrawl={dataCrawl}></RequestTable>
+      <RequestTable dataCrawl={dataCrawl} handleButtonClick={handleButtonClick} ProgressWithLabel={ProgressWithLabel}></RequestTable>
 
+      <JobDetailsModal jobId={selectedJobId} open={modalOpen} handleClose={handleCloseModal} />
+
+      {/* <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={dataCrawl.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      /> */}
     </Container>
   );
 }
 
-const DialogCheck = ({ open, CloseDialog, selectedPageUrls, handleSubmit, handleChange }) => (
-  <Dialog open={open} onClose={CloseDialog}>
+const DialogCheck = ({ openDialogCheck, CloseDialog, selectedPageUrls, handleSubmit, handleChange }) => (
+  <Dialog open={openDialogCheck} onClose={CloseDialog}>
     <DialogTitle>Thêm kiểm tra mới</DialogTitle>
     <DialogContent>
       <TextField
@@ -278,41 +355,43 @@ const DialogCheck = ({ open, CloseDialog, selectedPageUrls, handleSubmit, handle
   </Dialog>
 );
 
-const RequestTable = ({ dataCrawl }) => {
+const RequestTable = ({ dataCrawl, handleButtonClick, ProgressWithLabel }) => {
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>ID yêu cầu</TableCell>
-          <TableCell>Mô tả</TableCell>
-          <TableCell>Tổng</TableCell>
-          <TableCell>Trạng thái</TableCell>
-          <TableCell>Ngày tạo</TableCell>
-          <TableCell>Ngày cập nhật</TableCell>
-          <TableCell>Hành động</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {dataCrawl.map((request) => (
-          <TableRow key={request.job_id}>
-            <TableCell>{request.job_id}</TableCell>
-            <TableCell>{request.description}</TableCell>
-            <TableCell>{request.total}</TableCell>
-            <TableCell>{request.finished ? 'Hoàn thành' : 'Chưa hoàn thành'}</TableCell>
-            <TableCell>{request.createdAt}</TableCell>
-            <TableCell>{request.updatedAt}</TableCell>
-            <TableCell align="right">
-              <Button
-                variant="contained"
-                // disabled={!job.finished}
-                // onClick={() => handleButtonClick(job.job_id)}
-              >
-                Xem chi tiết
-              </Button>
-            </TableCell>
+    <StyledTableContainer component={Paper} style={{ height: '60vh', overflow: 'auto' }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>ID yêu cầu</StyledTableCell>
+            <StyledTableCell>Mô tả</StyledTableCell>
+            <StyledTableCell>Tổng</StyledTableCell>
+            <StyledTableCell>Trạng thái</StyledTableCell>
+            <StyledTableCell>Ngày tạo</StyledTableCell>
+            <StyledTableCell>Ngày cập nhật</StyledTableCell>
+            <StyledTableCell>Hành động</StyledTableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHead>
+        <TableBody>
+          {dataCrawl.map((request) => (
+            <StyledTableRow key={request.job_id}>
+              <TableCell>{request.job_id}</TableCell>
+              <TableCell>{request.description || 'N/A'}</TableCell>
+              <TableCell>{request.total}</TableCell>
+              <TableCell>{<ProgressWithLabel value={(request.success / request.total) * 100} />}</TableCell>
+              <TableCell>{new Date(request.createdAt).toLocaleString()}</TableCell>
+              <TableCell>{new Date(request.updatedAt).toLocaleString()}</TableCell>
+              <TableCell align="right">
+                <Button
+                  variant="contained"
+                  disabled={!request.finished}
+                  onClick={() => handleButtonClick(request.job_id)}
+                >
+                  Xem chi tiết
+                </Button>
+              </TableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </StyledTableContainer>
   );
 };

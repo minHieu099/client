@@ -17,9 +17,9 @@ export default function CheckView() {
 
   return (
     <CustomContainer>
-        <Box mt={4}>
-          <PostContent />
-        </Box>
+      <Box mt={4}>
+        <PostContent />
+      </Box>
     </CustomContainer>
   );
 }
