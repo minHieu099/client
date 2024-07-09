@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Chart, { useChart } from 'src/components/chart';
+import { fNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export default function PostInMonth({ title, subheader, chart, ...other }) {
       y: {
         formatter: (value) => {
           if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} điểm`;
+            return `${fNumber(value)} điểm`;
           }
           return value;
         },

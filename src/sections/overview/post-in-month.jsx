@@ -6,6 +6,7 @@ import CardHeader from '@mui/material/CardHeader';
 
 import Chart, { useChart } from 'src/components/chart';
 import { Typography } from '@mui/material';
+import { fNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function PostInMonth({ title, subheader, chart, ...other }) {
       y: {
         formatter: (value) => {
           if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} tin bài`;
+            return `${fNumber(value)} tin bài`;
           }
           return value;
         },

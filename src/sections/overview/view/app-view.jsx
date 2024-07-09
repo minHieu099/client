@@ -109,7 +109,7 @@ export default function AppView() {
 
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="Số lượng theo dõi"
+            title="Lượt theo dõi"
             total={data.committee_data.followers}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/rating.png" />}
@@ -119,7 +119,7 @@ export default function AppView() {
         <Grid xs={12} md={6} lg={8}>
           <PostInMonth
             title="Hoạt động trong tháng (tin bài)"
-            subheader="(+43%) so với tháng trước"
+            subheader="(4 tuần gần nhất)"
             chart={{
               labels: data.chart_post_in_month.labels,
               series: data.chart_post_in_month.series,
@@ -139,7 +139,7 @@ export default function AppView() {
         <Grid xs={12} md={6} lg={8}>
           <PointInMonth
             title="Đánh giá trong tháng (điểm)"
-            subheader="(+43%) so với tháng trước"
+            subheader="(4 tuần gần nhất)"
             chart={{
               labels: data.chart_point_in_month.labels,
               series: data.chart_point_in_month.series,
