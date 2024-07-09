@@ -56,7 +56,7 @@ export default function LoginView() {
 
         <TextField
           name="username"
-          label="Nhập tài khoản"
+          label="Tài khoản"
           value={credentials.username}
           onChange={handleChange}
         />
@@ -93,7 +93,7 @@ export default function LoginView() {
         color="inherit"
         loading={loading}
       >
-        Login
+        Đăng nhập
       </LoadingButton>
     </form>
   );
@@ -106,15 +106,10 @@ export default function LoginView() {
           imgUrl: '/assets/background/overlay_4.jpg',
         }),
         height: 1,
+        textAlign: "center"
       }}
     >
-      <Logo
-        sx={{
-          position: 'fixed',
-          top: { xs: 16, md: 24 },
-          left: { xs: 16, md: 24 },
-        }}
-      />
+      
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
@@ -124,8 +119,13 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Đăng nhập</Typography>
 
+          <Logo
+        sx={{
+          width: 120,
+          height: 120,
+        }}
+      />
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
           </Typography>
 
