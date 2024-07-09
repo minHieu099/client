@@ -12,6 +12,8 @@ import PageFollowers from '../page-follower';
 import AppWidgetSummary from '../app-widget-summary';
 import { getFullname, getToken } from 'src/routes/auth';
 import label from 'src/components/label';
+import Iconify from 'src/components/iconify';
+import Stack from '@mui/material/Stack';
 
 const apiEndpoint = 'http://192.168.3.101:19999/api/stats';
 const token = getToken();
@@ -68,10 +70,14 @@ export default function AppView() {
   return (
     <Container maxWidth="xl">
 
-
-      <Typography variant="h5" sx={{ mb: 5 }}>
+    <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
+    <Iconify icon="noto:military-medal" sx={{width: 50, height:50}} />
+      <Typography variant="h5" sx={{ color: '#7D7B79' }}>
         {data.committee_data.name}
       </Typography>
+    </Stack>
+
+      
 
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
@@ -79,7 +85,7 @@ export default function AppView() {
             title="Đơn vị trực thuộc"
             total={data.committee_data.teams}
             color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            icon={<img alt="icon" src="/assets/icons/glass/organization-chart.png" />}
           />
         </Grid>
 
@@ -88,7 +94,7 @@ export default function AppView() {
             title="Tài khoản Facebook"
             total={data.committee_data.profiles}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            icon={<img alt="icon" src="/assets/icons/glass/verified.png" />}
           />
         </Grid>
 
@@ -97,7 +103,7 @@ export default function AppView() {
             title="Kênh truyền thông"
             total={data.committee_data.pages}
             color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+            icon={<img alt="icon" src="/assets/icons/glass/social-media.png" />}
           />
         </Grid>
 
@@ -106,7 +112,7 @@ export default function AppView() {
             title="Số lượng theo dõi"
             total={data.committee_data.followers}
             color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            icon={<img alt="icon" src="/assets/icons/glass/rating.png" />}
           />
         </Grid>
 

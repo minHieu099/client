@@ -31,15 +31,15 @@ export default function Header({ onOpenNav }) {
         </IconButton>
       )}
 
-      <Typography variant="h4" align="center" sx={{ color: 'blue' }}>
-        Hệ thống quản lý, giám sát các kênh truyền thông
+      <Box sx={{ flexGrow: 1 }} />
+      
+      <Typography variant="h4" align="center" sx={{ color: '#EC8D4E' }}>
+        HỆ THỐNG QUẢN LÝ, GIÁM SÁT CÁC KÊNH TRUYỀN THÔNG
       </Typography>
 
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        {/* <LanguagePopover /> */}
-        {/* <NotificationsPopover /> */}
         <AccountPopover />
       </Stack>
     </>

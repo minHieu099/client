@@ -20,8 +20,19 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 import { getToken } from 'src/routes/auth';
 import axios from 'axios';
 import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
+import styled from 'styled-components';
 
 // ----------------------------------------------------------------------
+
+const CustomContainer = styled(Container)({
+  textAlign: 'center',
+  maxWidth: '1200px',
+  margin: '50px auto',
+  backgroundColor: '#fff',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+});
 
 export default function UserPage() {
   const [page, setPage] = useState(0);
@@ -153,6 +164,7 @@ export default function UserPage() {
 
   return (
     <Container>
+      <CustomContainer>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Danh sách cộng tác viên</Typography>
         <Button
@@ -190,7 +202,6 @@ export default function UserPage() {
               />
               <TableBody>
                 {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <UserTableRow
                       key={row._id}
@@ -217,7 +228,7 @@ export default function UserPage() {
           </TableContainer>
         </Scrollbar>
 
-        <TablePagination
+        {/* <TablePagination
           page={page}
           component="div"
           count={userProfile.length}
@@ -225,7 +236,7 @@ export default function UserPage() {
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        /> */}
       </Card>
 
       <AddUser
@@ -243,6 +254,7 @@ export default function UserPage() {
         message={toast.message}
         severity={toast.severity}
       />
+      </CustomContainer>
     </Container>
   );
 }

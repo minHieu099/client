@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Snackbar, Alert } from '@mui/material';
+import { Container, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Snackbar, Alert } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { getToken } from 'src/routes/auth';
 import Iconify from 'src/components/iconify';
+
+const CustomContainer = styled(Container)({
+  textAlign: 'center',
+  maxWidth: '1200px',
+  margin: '50px auto',
+  backgroundColor: '#fff',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+});
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   padding: theme.spacing(1.5),
@@ -176,6 +186,9 @@ function BlogView() {
 
   return (
     <Container>
+      <CustomContainer>
+
+      
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
       <Typography variant="h4" component="h1" gutterBottom>
         Danh sách đơn vị
@@ -186,7 +199,7 @@ function BlogView() {
         startIcon={<Iconify icon="eva:plus-fill" />}
         onClick={OpenDialogAdd}
       >
-        Thêm đơn vị
+        Thêm
       </Button>
       </Stack>
 
@@ -208,12 +221,12 @@ function BlogView() {
                 <StyledTableCell>
                   <Link to={`/dvtt/staff/${row._id}`}>
                     <StyledButton variant="contained" color="primary">
-                      Danh sách cán bộ
+                      Tài khoản MXH
                     </StyledButton>
                   </Link>
                   <Link to={`/dvtt/pages/${row._id}`}>
                     <Button variant="contained" color="secondary">
-                      Danh sách trang
+                      Kênh truyền thông
                     </Button>
                   </Link>
                 </StyledTableCell>
@@ -237,7 +250,7 @@ function BlogView() {
           </TableBody>
         </Table>
       </TableContainer>
-
+      </CustomContainer>
 
       <AddDonVi
         openDialogAdd={openDialogAdd}

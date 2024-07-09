@@ -370,7 +370,7 @@ const RequestTable = ({ dataCrawl, handleButtonClick, ProgressWithLabel }) => {
             <StyledTableCell align="center">Trạng thái</StyledTableCell>
             <StyledTableCell align="center">Ngày tạo</StyledTableCell>
             <StyledTableCell align="center">Ngày cập nhật</StyledTableCell>
-            <StyledTableCell align="center">Hành động</StyledTableCell>
+            <StyledTableCell align="center" style={{ width: '20%' }}>Hành động</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -1,4 +1,4 @@
-import { Label } from '@mui/icons-material';
+import Label from 'src/components/label';
 import { Alert, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,18 @@ import { useParams } from 'react-router-dom';
 import Iconify from 'src/components/iconify';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
+import Stack from '@mui/material/Stack';
+import styled from 'styled-components';
+
+const CustomContainer = styled(Container)({
+    textAlign: 'center',
+    maxWidth: '1200px',
+    margin: '50px auto',
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+  });
 
 function PageList() {
     const { id } = useParams();
@@ -201,23 +213,30 @@ function PageList() {
 
     return (
         <Container>
-            <Typography variant="h4" component="h1" gutterBottom>
-                Danh sách các trang
-            </Typography>
-            <Button
-                variant="contained"
-                color="primary"
-                style={{ marginBottom: '10px' }}
-                onClick={dialogAddPage}
-            ><Iconify icon="eva:plus-fill" />
-            </Button>
+            <CustomContainer>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                Kênh truyền thông
+                </Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginBottom: '10px' }}
+                    startIcon={<Iconify icon="eva:plus-fill" />}
+                    onClick={dialogAddPage}
+                >Thêm
+                </Button>
+
+            </Stack>
+
             {error && <Typography color="error">{error}</Typography>}
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center" style={{ width: '10%' }}>TT</TableCell>
-                            <TableCell align="center" style={{ width: '15%' }}>Trạng thái</TableCell>
+                            <TableCell align="center" style={{ width: '5%' }}>STT</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>Trạng thái</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>Đơn vị</TableCell>
                             <TableCell align="center" style={{ width: '15%' }}>Tên trang</TableCell>
                             <TableCell align="center" style={{ width: '25%' }}>Đường dẫn</TableCell>
                             <TableCell align="center" style={{ width: '35%' }}>Chức năng</TableCell>
@@ -235,6 +254,7 @@ function PageList() {
                                         sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}
                                     />
                                 </TableCell>
+                                <TableCell align="center"><Label color={'success'}>{row.team}</Label></TableCell>
                                 <TableCell align="center">{row.name}</TableCell>
                                 <TableCell align="center"><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
                                 <TableCell align="center">
@@ -291,6 +311,7 @@ function PageList() {
                 message={toast.message}
                 severity={toast.severity}
             />
+            </CustomContainer>
         </Container>
     );
 }

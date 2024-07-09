@@ -23,6 +23,19 @@ import { useParams } from 'react-router-dom';
 import Iconify from 'src/components/iconify';
 import { getToken } from 'src/routes/auth';
 import { useRouter } from 'src/routes/hooks';
+import Stack from '@mui/material/Stack';
+import Label from 'src/components/label';
+import {styled} from 'styled-components';
+
+const CustomContainer = styled(Container)({
+  textAlign: 'center',
+  maxWidth: '1200px',
+  margin: '50px auto',
+  backgroundColor: '#fff',
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+});
 
 function StaffList() {
   const { id } = useParams();
@@ -189,6 +202,7 @@ function StaffList() {
 
   return (
     <Container>
+      <CustomContainer>
       <Header handleAddStaffOpen={handleAddStaffOpen} />
       {error && <Typography color="error">{error}</Typography>}
       {!error && <StaffTable dialogConfirmDelete={dialogConfirmDelete} staffList={staffList} handleEditOpen={handleEditOpen} />}
@@ -218,6 +232,7 @@ function StaffList() {
         message={toast.message}
         severity={toast.severity}
       />
+      </CustomContainer>
     </Container>
   );
 }
@@ -225,16 +240,20 @@ function StaffList() {
 // Header component
 const Header = ({ handleAddStaffOpen }) => (
   <>
+  <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
     <Typography variant="h4" component="h1" gutterBottom>
-      Danh sách cán bộ
+      Tài khoản MXH
     </Typography>
     <Button
       variant="contained"
       color="primary"
+      startIcon={<Iconify icon="eva:plus-fill" />}
       style={{ marginBottom: '10px' }}
       onClick={handleAddStaffOpen}
-    ><Iconify icon="eva:plus-fill" />
+    >Thêm
     </Button>
+  </Stack>
+    
   </>
 );
 
@@ -244,21 +263,23 @@ const StaffTable = ({ staffList, handleEditOpen, dialogConfirmDelete }) => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>TT</TableCell>
-          <TableCell>Chủ tài khoản</TableCell>
-          <TableCell>Đường dẫn</TableCell>
-          <TableCell>Chức năng</TableCell>
+          <TableCell align="center" style={{ width: '5%' }}>STT</TableCell>
+          <TableCell align="center" style={{ width: '15%' }}>Đơn vị</TableCell>
+          <TableCell align="center" style={{ width: '20%' }}>Chủ tài khoản</TableCell>
+          <TableCell align="center" style={{ width: '30%' }}>Đường dẫn</TableCell>
+          <TableCell align="center" style={{ width: '30%' }}>Chức năng</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {staffList.map((staff, index) => (
           <TableRow key={staff._id}>
-            <TableCell>{index + 1}</TableCell>
-            <TableCell>{staff.fullname}</TableCell>
+            <TableCell align="center">{index + 1}</TableCell>
+            <TableCell align="center"><Label color={'success'}>{staff.team}</Label></TableCell>
+            <TableCell align="left">{staff.fullname}</TableCell>
             <TableCell>
               <a href={staff.url} target="_blank" rel="noopener noreferrer">{staff.url}</a>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Button
                 variant="contained"
                 color="primary"
