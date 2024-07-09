@@ -240,7 +240,7 @@ export default function PageCheckTable() {
             variant="contained"
             color="primary"
             onClick={OpenDialog}
-            sx={{ ml: 2, mb: 2 }}
+            sx={{ mt: 2 }}
           >
             Kiểm tra trang đã chọn
           </Button>
@@ -362,13 +362,13 @@ const RequestTable = ({ dataCrawl, handleButtonClick, ProgressWithLabel }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell>ID yêu cầu</StyledTableCell>
-            <StyledTableCell>Mô tả</StyledTableCell>
-            <StyledTableCell>Tổng</StyledTableCell>
-            <StyledTableCell>Trạng thái</StyledTableCell>
-            <StyledTableCell>Ngày tạo</StyledTableCell>
-            <StyledTableCell>Ngày cập nhật</StyledTableCell>
-            <StyledTableCell>Hành động</StyledTableCell>
+            <StyledTableCell align="center">Mã tác vụ</StyledTableCell>
+            <StyledTableCell align="center">Mô tả</StyledTableCell>
+            <StyledTableCell align="center">Số tin bài</StyledTableCell>
+            <StyledTableCell align="center">Trạng thái</StyledTableCell>
+            <StyledTableCell align="center">Ngày tạo</StyledTableCell>
+            <StyledTableCell align="center">Ngày cập nhật</StyledTableCell>
+            <StyledTableCell align="center">Hành động</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -376,11 +376,11 @@ const RequestTable = ({ dataCrawl, handleButtonClick, ProgressWithLabel }) => {
             <StyledTableRow key={request.job_id}>
               <TableCell>{request.job_id}</TableCell>
               <TableCell>{request.description || 'N/A'}</TableCell>
-              <TableCell>{request.total}</TableCell>
-              <TableCell>{<ProgressWithLabel value={(request.success / request.total) * 100} />}</TableCell>
-              <TableCell>{new Date(request.createdAt).toLocaleString()}</TableCell>
-              <TableCell>{new Date(request.updatedAt).toLocaleString()}</TableCell>
-              <TableCell align="right">
+              <TableCell align="center">{request.total}</TableCell>
+              <TableCell align="center">{<ProgressWithLabel value={(request.success / request.total) * 100} />}</TableCell>
+              <TableCell align="center">{new Date(request.createdAt).toLocaleString()}</TableCell>
+              <TableCell align="center">{new Date(request.updatedAt).toLocaleString()}</TableCell>
+              <TableCell align="center">
                 <Button
                   variant="contained"
                   disabled={!request.finished}

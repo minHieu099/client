@@ -8,35 +8,35 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'Biểu đồ thống kê',
+    title: 'Thống kê',
     path: '/',
-    icon: icon('ic_analytics'),
+    icon: icon('stats'),
   },
   {
     title: 'Đơn vị trực thuộc',
     path: '/dvtt',
-    icon: icon('ic_blog'),
+    icon: icon('organization'),
   },
   {
     title: 'kiểm tra bài viết',
     path: '/checkpost',
-    icon: icon('ic_blog'),
+    icon: icon('job'),
   },
   {
     title: 'kiểm tra trang',
     path: '/checkpages',
-    icon: icon('ic_blog'),
+    icon: icon('job'),
   },
   {
     title: 'tài khoản',
     path: '/user',
-    icon: icon('ic_user'),
+    icon: icon('users'),
   },
-  // {
-  //   title: 'Tiến độ công việc',
-  //   path: '/progress',
-  //   icon: icon('ic_user'),
-  // }
+  {
+    title: 'Biểu đồ',
+    path: '/charts',
+    icon: icon('chart'),
+  }
 ];
 
 export default navConfig;
