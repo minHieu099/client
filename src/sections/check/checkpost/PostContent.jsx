@@ -150,8 +150,8 @@ export default function PostContent() {
                   <TableCell align="center">
                     {<ProgressWithLabel value={(job.success / job.total) * 100} />}
                   </TableCell>
-                  <TableCell align="center">{new Date(job.createdAt).toLocaleString()}</TableCell>
-                  <TableCell align="center">{new Date(job.updatedAt).toLocaleString()}</TableCell>
+                  <TableCell align="center">{new Date(job.createdAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
+                  <TableCell align="center">{new Date(job.updatedAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
                   <TableCell align="center">
                     <Button
                       variant="contained"

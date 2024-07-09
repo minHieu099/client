@@ -40,14 +40,14 @@ function CreateTaskDialog({ open, handleClose }) {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Thêm Kiểm Tra Mới</DialogTitle>
+      <DialogTitle>Thêm yêu cầu</DialogTitle>
       <DialogContent>
-        <DialogContentText>Nhập các đường dẫn và mô tả tác vụ của bạn.</DialogContentText>
+        {/* <DialogContentText>Nhập các đường dẫn và mô tả</DialogContentText> */}
         <TextField
           autoFocus
           margin="dense"
           id="urls"
-          label="Đường dẫn bài viết"
+          label="Đường dẫn"
           type="text"
           fullWidth
           variant="standard"

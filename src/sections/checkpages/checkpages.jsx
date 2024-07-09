@@ -304,14 +304,14 @@ export default function PageCheckTable() {
 
 const DialogCheck = ({ openDialogCheck, CloseDialog, selectedPageUrls, handleSubmit, handleChange }) => (
   <Dialog open={openDialogCheck} onClose={CloseDialog}>
-    <DialogTitle>Thêm kiểm tra mới</DialogTitle>
+    <DialogTitle>Thêm yêu cầu</DialogTitle>
     <DialogContent>
       <TextField
         autoFocus
         margin="dense"
         name='url'
         id="urls"
-        label="Đường dẫn bài viết"
+        label="Đường dẫn"
         type="text"
         fullWidth
         variant="standard"
@@ -334,7 +334,7 @@ const DialogCheck = ({ openDialogCheck, CloseDialog, selectedPageUrls, handleSub
         margin="dense"
         name='post_per_target'
         id="post_per_target"
-        label="Số lượng bài (tối đã 30 bài)"
+        label="Số lượng tin bài (tối đa 30 bài)"
         type="text"
         fullWidth
         variant="standard"
@@ -380,8 +380,8 @@ const RequestTable = ({ dataCrawl, handleButtonClick, ProgressWithLabel }) => {
               <TableCell>{request.description || 'N/A'}</TableCell>
               <TableCell align="center">{request.total}</TableCell>
               <TableCell align="center">{<ProgressWithLabel value={(request.success / request.total) * 100} />}</TableCell>
-              <TableCell align="center">{new Date(request.createdAt).toLocaleString()}</TableCell>
-              <TableCell align="center">{new Date(request.updatedAt).toLocaleString()}</TableCell>
+              <TableCell align="center">{new Date(request.createdAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
+              <TableCell align="center">{new Date(request.updatedAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
               <TableCell align="center">
                 <Button
                   variant="contained"
