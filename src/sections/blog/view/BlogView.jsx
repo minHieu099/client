@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Snackbar, Alert } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
@@ -175,16 +176,19 @@ function BlogView() {
 
   return (
     <Container>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
       <Typography variant="h4" component="h1" gutterBottom>
         Danh sách đơn vị
       </Typography>
       <Button
         variant="contained"
         color="primary"
-        style={{ marginBottom: '10px' }}
+        startIcon={<Iconify icon="eva:plus-fill" />}
         onClick={OpenDialogAdd}
-      ><Iconify icon="eva:plus-fill" />
+      >
+        Thêm đơn vị
       </Button>
+      </Stack>
 
       <TableContainer component={Paper}>
         <Table>

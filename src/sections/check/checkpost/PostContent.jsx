@@ -123,7 +123,7 @@ export default function PostContent() {
       <Container>
         <Box display="flex" justifyContent="flex" marginTop={2} marginBottom={2}>
           <Button variant="contained" color="primary" onClick={handleOpenDialog}>
-            Tạo kiểm tra mới
+            Kiểm tra
           </Button>
         </Box>
         {error && <p style={{ color: 'red' }}>{error}</p>}

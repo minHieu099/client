@@ -234,16 +234,18 @@ export default function PageCheckTable() {
         ))}
       </Menu>
 
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={OpenDialog}
+        sx={{ mt: 2, ml: 2 }}
+      >
+        Kiểm tra
+      </Button>
+
       {selectedUnit && (
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={OpenDialog}
-            sx={{ mt: 2 }}
-          >
-            Kiểm tra trang đã chọn
-          </Button>
+          
           <StyledTableContainer component={Paper}>
             <Table>
               <TableHead>

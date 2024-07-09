@@ -154,10 +154,10 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Tài khoản</Typography>
+        <Typography variant="h4">Danh sách cộng tác viên</Typography>
         <Button
-          ariant="contained"
-          color="inherit"
+          variant="contained"
+          color="primary"
           startIcon={<Iconify icon="eva:plus-fill" />}
           onClick={OpenDialogAdd}
         >
@@ -166,10 +166,10 @@ export default function UserPage() {
       </Stack>
 
       <Card>
-        <UserTableToolbar
+        {/* <UserTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}
-        />
+        /> */}
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>

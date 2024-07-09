@@ -32,7 +32,7 @@ export default function Header({ onOpenNav }) {
       )}
 
       <Typography variant="h4" align="center" sx={{ color: 'blue' }}>
-        Hệ thống quản lý, giám sát tương tác các kênh truyền thông MXH Facebook
+        Hệ thống quản lý, giám sát các kênh truyền thông
       </Typography>
 
       <Box sx={{ flexGrow: 1 }} />
