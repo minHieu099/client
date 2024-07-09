@@ -1,37 +1,77 @@
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
+
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import { styled, useTheme } from '@mui/material/styles';
+
+import { fNumber } from 'src/utils/format-number';
+
 import Chart, { useChart } from 'src/components/chart';
 
 // ----------------------------------------------------------------------
 
-export default function PostInWeek({ title, subheader, chart, ...other }) {
-  const { labels, colors, series, options } = chart;
+const CHART_HEIGHT = 400;
+
+const LEGEND_HEIGHT = 72;
+
+const StyledChart = styled(Chart)(({ theme }) => ({
+  height: CHART_HEIGHT,
+  '& .apexcharts-canvas, .apexcharts-inner, svg, foreignObject': {
+    height: `100% !important`,
+  },
+  '& .apexcharts-legend': {
+    height: LEGEND_HEIGHT,
+    borderTop: `dashed 1px ${theme.palette.divider}`,
+    top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
+  },
+}));
+
+// ----------------------------------------------------------------------
+
+export default function PointInWeek({ title, subheader, chart, ...other }) {
+  const theme = useTheme();
+
+  const { colors, series, options } = chart;
+
+  const chartSeries = series.map((i) => i.value);
 
   const chartOptions = useChart({
-    colors,
-    plotOptions: {
-      bar: {
-        columnWidth: '16%',
+    chart: {
+      sparkline: {
+        enabled: true,
       },
     },
-    fill: {
-      type: series.map((i) => i.fill),
+    colors,
+    labels: series.map((i) => i.label),
+    stroke: {
+      colors: [theme.palette.background.paper],
     },
-    labels,
-    xaxis: {
-      type: 'string',
+    legend: {
+      floating: true,
+      position: 'bottom',
+      horizontalAlign: 'center',
+    },
+    dataLabels: {
+      enabled: true,
+      dropShadow: {
+        enabled: false,
+      },
     },
     tooltip: {
-      shared: true,
-      intersect: false,
+      fillSeriesColor: false,
       y: {
-        formatter: (value) => {
-          if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} điểm`;
-          }
-          return value;
+        formatter: (value) => `${fNumber(value)} điểm`,
+        title: {
+          formatter: (seriesName) => `${seriesName}:`,
+        },
+      },
+    },
+    plotOptions: {
+      pie: {
+        donut: {
+          labels: {
+            show: false,
+          },
         },
       },
     },
@@ -40,23 +80,21 @@ export default function PostInWeek({ title, subheader, chart, ...other }) {
 
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+      <CardHeader title={title} subheader={subheader} sx={{ mb: 5 }} />
 
-      <Box sx={{ p: 3, pb: 1 }}>
-        <Chart
-          dir="ltr"
-          type="line"
-          series={series}
-          options={chartOptions}
-          width="100%"
-          height={364}
-        />
-      </Box>
+      <StyledChart
+        dir="ltr"
+        type="pie"
+        series={chartSeries}
+        options={chartOptions}
+        width="100%"
+        height={280}
+      />
     </Card>
   );
 }
 
-PostInWeek.propTypes = {
+PointInWeek.propTypes = {
   chart: PropTypes.object,
   subheader: PropTypes.string,
   title: PropTypes.string,

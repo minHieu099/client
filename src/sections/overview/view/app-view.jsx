@@ -4,10 +4,11 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
+import PointInMonth from '../point-in-month';
 import PointInWeek from '../point-in-week';
-import PostInDay from '../app-current-visits';
-import PostInWeek from '../app-website-visits';
-import PageFollowers from '../app-conversion-rates';
+import PostInWeek from '../post-in-week';
+import PostInMonth from '../post-in-month';
+import PageFollowers from '../page-follower';
 import AppWidgetSummary from '../app-widget-summary';
 import { getFullname, getToken } from 'src/routes/auth';
 import label from 'src/components/label';
@@ -110,7 +111,7 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={12} md={6} lg={8}>
-          <PostInWeek
+          <PostInMonth
             title="Hoạt động trong tháng (tin bài)"
             subheader="(+43%) so với tháng trước"
             chart={{
@@ -121,7 +122,7 @@ export default function AppView() {
         </Grid>
 
         <Grid xs={12} md={6} lg={4}>
-          <PostInDay
+          <PostInWeek
             title="Hoạt động trong tuần"
             chart={{
               series: data.chart_post_in_week.series,
@@ -129,13 +130,22 @@ export default function AppView() {
           />
         </Grid>
 
-        <Grid xs={12} md={6} lg={12}>
-          <PointInWeek
+        <Grid xs={12} md={6} lg={8}>
+          <PointInMonth
             title="Đánh giá trong tháng (điểm)"
             subheader="(+43%) so với tháng trước"
             chart={{
               labels: data.chart_point_in_month.labels,
               series: data.chart_point_in_month.series,
+            }}
+          />
+        </Grid>
+
+        <Grid xs={12} md={6} lg={4}>
+          <PointInWeek
+            title="Đánh giá trong tuần"
+            chart={{
+              series: data.chart_point_in_week.series,
             }}
           />
         </Grid>

@@ -28,7 +28,7 @@ const StyledChart = styled(Chart)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function AppCurrentVisits({ title, subheader, chart, ...other }) {
+export default function PostInWeek({ title, subheader, chart, ...other }) {
   const theme = useTheme();
 
   const { colors, series, options } = chart;
@@ -94,7 +94,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
   );
 }
 
-AppCurrentVisits.propTypes = {
+PostInWeek.propTypes = {
   chart: PropTypes.object,
   subheader: PropTypes.string,
   title: PropTypes.string,

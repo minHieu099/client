@@ -130,7 +130,7 @@ export default function UserTableRow({
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{
-          sx: { width: 100 },
+          sx: { width: 50 },
         }}
       >
         <MenuItem onClick={OpenDialogEdit}>
@@ -138,7 +138,7 @@ export default function UserTableRow({
         </MenuItem>
 
         <MenuItem onClick={OpenDialogDel}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+          <Iconify icon="eva:trash-2-outline" sx={{ }} />
         </MenuItem>
         <DeleteUser
           openDialogDelete={openDialogDelete}
