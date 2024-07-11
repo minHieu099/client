@@ -13,6 +13,7 @@ import PostInMonth from '../overview/post-in-month';
 import PostInWeek from '../overview/post-in-week';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
+import { format } from 'date-fns';
 
 const initialFromDate = new Date(); // Initial start date
 const initialUntilDate = new Date(); // Initial end date
@@ -94,7 +95,8 @@ export default function ChartView() {
     if (error) {
         return <Typography>Error: {error.message}</Typography>;
     }
-
+    const formattedFromDateDisplay = format(fromDate, 'dd/MM/yyyy');
+    const formattedUntilDateDisplay = format(untilDate, 'dd/MM/yyyy');
     return (
         <Container maxWidth="xl">
             <DateSelector
@@ -107,8 +109,8 @@ export default function ChartView() {
             <Grid container spacing={3}>
                 <Grid xs={12} md={6} lg={8}>
                     <PostInMonth
-                        title="Hoạt động trong tháng (tin bài)"
-                        subheader="(4 tuần gần nhất)"
+                        title="Số lượng tin bài"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_post_in_range.labels,
                             series: data.chart_post_in_range.series,
@@ -117,7 +119,8 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={4}>
                     <PostInWeek
-                        title="Hoạt động trong tuần"
+                        title="Phân bổ theo đơn vị"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             series: data.chart_dist_post_in_range.series,
                         }}
@@ -125,8 +128,8 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
                     <PointInMonth
-                        title="Đánh giá trong tháng (điểm)"
-                        subheader="(4 tuần gần nhất)"
+                        title="Đánh giá chất lượng (điểm)"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_point_in_range.labels,
                             series: data.chart_point_in_range.series,
@@ -135,7 +138,8 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={4}>
                     <PointInWeek
-                        title="Đánh giá trong tuần"
+                        title="Phân bổ theo đơn vị"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             series: data.chart_dist_point_in_range.series,
                         }}
@@ -143,8 +147,8 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={12}>
                     <PostInMonth
-                        title="Hoạt động trong tháng (điểm)"
-                        subheader="(4 tuần gần nhất)"
+                        title="Hoạt động của các đơn vị (tin bài)"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_team_post_in_range.labels,
                             series: data.chart_team_post_in_range.series,
@@ -153,8 +157,8 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={12}>
                     <PointInMonth
-                        title="Đánh giá trong tháng (điểm)"
-                        subheader="(4 tuần gần nhất)"
+                        title="Đánh giá chất lượng các đơn vị (điểm)"
+                        subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_team_point_in_range.labels,
                             series: data.chart_team_point_in_range.series,
