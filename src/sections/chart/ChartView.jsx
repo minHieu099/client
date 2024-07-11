@@ -109,7 +109,7 @@ export default function ChartView() {
             <Grid container spacing={3}>
                 <Grid xs={12} md={6} lg={8}>
                     <PostInMonth
-                        title="Số lượng tin bài"
+                        title={`Số lượng tin bài: ${data.total_post}`}
                         subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_post_in_range.labels,
