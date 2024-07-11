@@ -82,7 +82,7 @@ export default function UserPage() {
       setError(null); // Clear any previous error if fetch succeeds
     } catch (error) {
       console.error('Error fetching unit data:', error);
-      setError('Failed to fetch data. Please try again later.');
+      setError('Lỗi kết nối, vui lòng thử lại sau.');
     }
   };
 
@@ -166,7 +166,7 @@ export default function UserPage() {
     <Container>
       <CustomContainer>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Danh sách cộng tác viên</Typography>
+        <Typography variant="h4">Danh sách quản trị viên</Typography>
         <Button
           variant="contained"
           color="primary"

@@ -22,7 +22,7 @@ export default function Router() {
     {
       element: isAuthenticated() ? (
         <DashboardLayout>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>Đang tải dữ liệu ...</div>}>
             <Outlet />
           </Suspense>
         </DashboardLayout>

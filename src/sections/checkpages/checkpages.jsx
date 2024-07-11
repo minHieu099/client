@@ -168,7 +168,6 @@ export default function PageCheckTable() {
       .catch(error => {
         console.error('API Error:', error);
       });
-    alert('Task submitted successfully!');
 
     CloseDialog();
   };

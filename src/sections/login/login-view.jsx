@@ -44,7 +44,7 @@ export default function LoginView() {
       router.push('/');
     } catch (error) {
       console.error('Error logging in:', error);
-      alert('Failed to log in. Please check your credentials and try again.');
+      alert('Thông tin đăng nhập không hợp lệ.');
     } finally {
       setLoading(false);
     }

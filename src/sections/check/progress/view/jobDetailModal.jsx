@@ -62,7 +62,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
 
             } catch (error) {
                 console.error('Error fetching job details:', error);
-                setError('Failed to fetch job details');
+                setError('Lỗi kết nối, vui lòng thử lại sau.');
             }
             setLoading(false);
         };
@@ -124,7 +124,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
             aria-describedby="job-details-display"
         >
             <StyledPaper>
-                {loading ? <p>Loading...</p> :
+                {loading ? <p>Đang tải dữ liệu ...</p> :
                 error ? <p>{error}</p> :
                 <>
                     <StyledTable aria-label="Statistical Data">

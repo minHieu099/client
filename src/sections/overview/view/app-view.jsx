@@ -44,7 +44,7 @@ export default function AppView() {
   }, []);
 
   if (loading) {
-    return <Typography>Loading...</Typography>;
+    return <Typography>Đang tải dữ liệu ...</Typography>;
   }
 
   if (error) {

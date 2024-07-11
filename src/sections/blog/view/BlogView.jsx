@@ -47,7 +47,7 @@ function BlogView() {
       setError(null); // Clear any previous error if fetch succeeds
     } catch (error) {
       console.error('Error fetching unit data:', error);
-      setError('Failed to fetch data. Please try again later.');
+      setError('Lỗi kết nối, vui lòng thử lại sau.');
     }
   };
   useEffect(() => {

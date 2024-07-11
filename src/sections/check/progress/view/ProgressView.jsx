@@ -51,7 +51,7 @@ function ProcessView() {
         setJobs(response.data);
       } catch (error) {
         console.error('Error fetching progress data:', error);
-        setError('Failed to fetch data. Please try again later.');
+        setError('Lỗi kết nối, vui lòng thử lại sau.');
       }
     };
 

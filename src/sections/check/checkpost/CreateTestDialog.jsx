@@ -29,11 +29,10 @@ function CreateTaskDialog({ open, handleClose }) {
           headers: { Authorization: `Bearer ${getToken()}` },
         }
       );
-      console.log(quickMode)
-      alert('Task submitted successfully!');
+
       handleClose();
     } catch (error) {
-      alert('Failed to submit task.');
+      alert('Lỗi kết nối, vui lòng thử lại sau.');
       console.error('Error:', error);
     }
   };

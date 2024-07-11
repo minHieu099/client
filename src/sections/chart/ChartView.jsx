@@ -37,7 +37,7 @@ function DateSelector({ fromDate, untilDate, handleFromDateChange, handleUntilDa
                     renderInput={(params) => <TextField {...params} />}
                 />
                 <Button variant="contained" onClick={handleFetchData}>
-                    Tải dữ liệu
+                    Phân tích
                 </Button>
             </Box>
         </LocalizationProvider>
@@ -89,7 +89,7 @@ export default function ChartView() {
     }, []);
 
     if (loading) {
-        return <Typography>Loading...</Typography>;
+        return <Typography>Đang tải dữ liệu ...</Typography>;
     }
 
     if (error) {

@@ -69,7 +69,7 @@ function StaffList() {
       setStaffList(response.data);
     } catch (error) {
       console.error('Error fetching staff data:', error);
-      setError('Failed to fetch data. Please try again later.');
+      setError('Lỗi kết nối, vui lòng thử lại sau.');
     }
   };
   useEffect(() => {
