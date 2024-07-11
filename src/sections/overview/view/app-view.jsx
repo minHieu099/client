@@ -23,41 +23,25 @@ export default function AppView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   axios.get(apiEndpoint, {
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`
-  //     }
-  //   })
-  //     .then(response => {
-  //       setData(response.data);
-  //       setLoading(false);
-  //     })
-  //     .catch(error => {
-  //       setError(error);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
   useEffect(() => {
-  const fetchData = async () => {
-    const token = getToken();
-    try {
-      const response = await axios.get(apiEndpoint, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  };
+    const fetchData = async () => {
+      const token = getToken();
+      try {
+        const response = await axios.get(apiEndpoint, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   if (loading) {
     return <Typography>Loading...</Typography>;
@@ -70,14 +54,14 @@ export default function AppView() {
   return (
     <Container maxWidth="xl">
 
-    <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
-    <Iconify icon="noto:military-medal" sx={{width: 50, height:50}} />
-      <Typography variant="h5" sx={{ color: '#7D7B79' }}>
-        {data.committee_data.name}
-      </Typography>
-    </Stack>
+      <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
+        <Iconify icon="noto:military-medal" sx={{ width: 50, height: 50 }} />
+        <Typography variant="h5" sx={{ color: '#7D7B79' }}>
+          {data.committee_data.name}
+        </Typography>
+      </Stack>
 
-      
+
 
       <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>

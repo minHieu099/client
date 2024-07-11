@@ -209,15 +209,15 @@ export default function PageCheckTable() {
     setSelectedJobId(null);
   };
   return (
-    
-    <Container sx={{ml: 0.6}}>
+
+    <Container sx={{ ml: 0.6 }}>
       <Button
         aria-controls="unit-menu"
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
         color="primary"
-        sx={{ mt: 2}}
+        sx={{ mt: 2 }}
       >
         Chọn đơn vị
       </Button>
@@ -245,7 +245,7 @@ export default function PageCheckTable() {
 
       {selectedUnit && (
         <div>
-          
+
           <StyledTableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -289,15 +289,6 @@ export default function PageCheckTable() {
 
       <JobDetailsModal jobId={selectedJobId} open={modalOpen} handleClose={handleCloseModal} />
 
-      {/* <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={dataCrawl.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
     </Container>
   );
 }

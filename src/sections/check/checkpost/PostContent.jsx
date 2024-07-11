@@ -123,7 +123,7 @@ export default function PostContent() {
       <Container>
         <Box display="flex" justifyContent="flex" marginTop={2} marginBottom={2}>
           <Button variant="contained" color="primary" onClick={handleOpenDialog}>
-            Kiểm tra
+            Tạo kiểm tra mới
           </Button>
         </Box>
         {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -131,13 +131,13 @@ export default function PostContent() {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Mã tác vụ</StyledTableCell>
-                <StyledTableCell align="center">Mô tả</StyledTableCell>
-                <StyledTableCell align="center">Số tin bài</StyledTableCell>
-                <StyledTableCell align="center">Trạng thái</StyledTableCell>
-                <StyledTableCell align="center">Ngày tạo</StyledTableCell>
-                <StyledTableCell align="center">Ngày cập nhật</StyledTableCell>
-                <StyledTableCell align="center" style={{ width: '20%' }}>Hành động</StyledTableCell>
+                <StyledTableCell>ID yêu cầu</StyledTableCell>
+                <StyledTableCell>Mô tả</StyledTableCell>
+                <StyledTableCell align="right">Tổng</StyledTableCell>
+                <StyledTableCell align="right">Trạng thái</StyledTableCell>
+                <StyledTableCell align="right">Ngày tạo</StyledTableCell>
+                <StyledTableCell align="right">Ngày cập nhật</StyledTableCell>
+                <StyledTableCell align="right">Hành động</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -146,13 +146,13 @@ export default function PostContent() {
                   <TableCell>{job.job_id}</TableCell>
                   <TableCell>{job.description || 'N/A'}</TableCell>
                   
-                  <TableCell align="center">{job.total}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="right">{job.total}</TableCell>
+                  <TableCell align="right">
                     {<ProgressWithLabel value={(job.success / job.total) * 100} />}
                   </TableCell>
-                  <TableCell align="center">{new Date(job.createdAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
-                  <TableCell align="center">{new Date(job.updatedAt).toLocaleString('en-UK', { hour12: false })}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="right">{new Date(job.createdAt).toLocaleString()}</TableCell>
+                  <TableCell align="right">{new Date(job.updatedAt).toLocaleString()}</TableCell>
+                  <TableCell align="right">
                     <Button
                       variant="contained"
                       disabled={!job.finished}

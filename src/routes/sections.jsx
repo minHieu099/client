@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
+import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
-import { Outlet, Navigate, useRoutes, useNavigate } from 'react-router-dom';
-import { element } from 'prop-types';
 import { isAuthenticated } from './auth';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -14,7 +13,8 @@ export const StaffPage = lazy(() => import('src/pages/staff'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const PageList = lazy(() => import('src/sections/blog/view/page/PageList'));
-export const Progress = lazy(() => import('src/pages/progress'));
+export const SchedulePage = lazy(() => import('src/pages/schedule'));
+export const ChartPage = lazy(() => import('src/pages/chart'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -32,7 +32,6 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
         {
           path: 'dvtt', element: <BlogPage />,
         },
@@ -40,7 +39,8 @@ export default function Router() {
         { path: 'dvtt/pages/:id', element: <PageList /> },
         { path: 'checkpost', element: <CheckPost /> },
         { path: 'checkpages', element: <CheckPages /> },
-        { path: 'progress', element: <Progress/> }
+        { path: 'scheduled', element: <SchedulePage /> },
+        { path: 'chart', element: <ChartPage /> }
       ]
     },
     {

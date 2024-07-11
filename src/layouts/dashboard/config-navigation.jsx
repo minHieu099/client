@@ -29,7 +29,7 @@ const navConfig = [
   },
   {
     title: 'kiểm tra định kỳ',
-    path: '/scheduled_check',
+    path: '/scheduled',
     icon: icon('job'),
   },
   {
@@ -39,7 +39,7 @@ const navConfig = [
   },
   {
     title: 'Biểu đồ',
-    path: '/charts',
+    path: '/chart',
     icon: icon('chart'),
   }
 ];
