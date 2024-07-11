@@ -28,6 +28,11 @@ const navConfig = [
     icon: icon('job'),
   },
   {
+    title: 'kiểm tra định kỳ',
+    path: '/scheduled_check',
+    icon: icon('job'),
+  },
+  {
     title: 'tài khoản',
     path: '/user',
     icon: icon('users'),
