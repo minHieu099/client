@@ -7,7 +7,7 @@ export default function ProcessPage() {
   return (
     <>
       <Helmet>
-        <title> Đơn vị trực thuộc </title>
+        <title> Hệ thống quản lý, giám sát các kênh truyền thông </title>
       </Helmet>
 
       <BlogView />

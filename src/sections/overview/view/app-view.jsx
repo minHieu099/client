@@ -55,7 +55,7 @@ export default function AppView() {
     <Container maxWidth="xl">
 
       <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 5 }}>
-        <Iconify icon="noto:military-medal" sx={{ width: 50, height: 50 }} />
+        <Iconify icon="noto:star" sx={{ width: 40, height: 40 }} />
         <Typography variant="h5" sx={{ color: '#7D7B79' }}>
           {data.committee_data.name}
         </Typography>

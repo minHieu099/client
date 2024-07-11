@@ -7,7 +7,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Đơn vị trực thuộc </title>
+        <title> . </title>
       </Helmet>
 
       <ProgressView />

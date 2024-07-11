@@ -7,7 +7,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Tài khoản </title>
+        <title> Hệ thống quản lý, giám sát các kênh truyền thông </title>
       </Helmet>
 
       <UserView />

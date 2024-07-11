@@ -13,7 +13,7 @@ const navConfig = [
     icon: icon('stats'),
   },
   {
-    title: 'Biểu đồ',
+    title: 'Phân tích',
     path: '/chart',
     icon: icon('chart'),
   },

@@ -7,7 +7,7 @@ export default function AppPage() {
   return (
     <>
       <Helmet>
-        <title> Biểu đồ thống kê </title>
+        <title> Hệ thống quản lý, giám sát các kênh truyền thông </title>
       </Helmet>
 
       <AppView />
