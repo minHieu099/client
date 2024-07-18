@@ -102,7 +102,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={8}>
           <PostInMonth
-            title="Hoạt động trong tháng (tin bài)"
+            title={`Hoạt động trong tháng (${data.total_post_in_month} tin bài)`}
             subheader="(4 tuần gần nhất)"
             chart={{
               labels: data.chart_post_in_month.labels,
@@ -113,7 +113,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={4}>
           <PostInWeek
-            title="Hoạt động trong tuần"
+            title={`Hoạt động trong tuần (${data.total_post_in_week} tin bài)`}
             chart={{
               series: data.chart_post_in_week.series,
             }}
@@ -143,7 +143,7 @@ export default function AppView() {
         <Grid xs={12} md={6} lg={12}>
           <PageFollowers
             title="Lượt theo dõi của các kênh truyền thông nổi bật"
-            subheader="(+43%) than last year"
+            subheader=""
             chart={{
               series: data.top_pages.series,
             }}
