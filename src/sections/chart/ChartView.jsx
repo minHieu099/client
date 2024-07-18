@@ -128,7 +128,7 @@ export default function ChartView() {
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
                     <PointInMonth
-                        title="Đánh giá chất lượng (điểm)"
+                        title={`Đánh giá chất lượng (điểm): ${data.total_react} lượt tương tác`}
                         subheader={`${formattedFromDateDisplay} - ${formattedUntilDateDisplay}`}
                         chart={{
                             labels: data.chart_point_in_range.labels,

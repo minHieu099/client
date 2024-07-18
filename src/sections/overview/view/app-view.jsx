@@ -102,7 +102,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={8}>
           <PostInMonth
-            title={`Hoạt động trong tháng (${data.total_post_in_month} tin bài)`}
+            title={`Hoạt động trong tháng: ${data.total_post_in_month} tin bài`}
             subheader="(4 tuần gần nhất)"
             chart={{
               labels: data.chart_post_in_month.labels,
@@ -113,7 +113,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={4}>
           <PostInWeek
-            title={`Hoạt động trong tuần (${data.total_post_in_week} tin bài)`}
+            title={`Hoạt động trong tuần: ${data.total_post_in_week} tin bài`}
             chart={{
               series: data.chart_post_in_week.series,
             }}
@@ -122,7 +122,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={8}>
           <PointInMonth
-            title="Đánh giá trong tháng (điểm)"
+            title={`Đánh giá trong tháng (điểm): ${data.total_react_in_month} lượt tương tác`}
             subheader="(4 tuần gần nhất)"
             chart={{
               labels: data.chart_point_in_month.labels,
@@ -133,7 +133,7 @@ export default function AppView() {
 
         <Grid xs={12} md={6} lg={4}>
           <PointInWeek
-            title="Đánh giá trong tuần"
+            title={`Đánh giá trong tuần (điểm): ${data.total_react_in_week} lượt tương tác`}
             chart={{
               series: data.chart_point_in_week.series,
             }}
