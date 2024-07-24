@@ -79,6 +79,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
     const aggregateData = (jobs) => {
         const aggregatedStats = [];
         const aggregatedUsers = [];
+        const aggregatedUnits = [];
 
         jobs.forEach((job, index) => {
             aggregatedStats.push({
@@ -97,16 +98,49 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                         url,
                         unit,
                         jobUrls: [job.url], // List of job URLs for each non-interacted user
-                        jobIndex: index + 1
                     });
                 }
             });
+
+            Object.entries(job.thongke_donvi).forEach((data) => {
+                const existingUnitIndex = aggregatedUnits.findIndex(u => u.unit === data[0])
+
+                if (existingUnitIndex !== -1) {
+                    aggregatedUnits[existingUnitIndex].counter += data[1];
+                } else {
+                    aggregatedUnits.push({
+                        unit: data[0],
+                        counter: data[1]
+                    });
+                }
+
+            })
         });
 
-        return { aggregatedStats, aggregatedUsers };
+        aggregatedUsers.sort((a,b) => {
+            if (a.jobUrls.length < b.jobUrls.length) {
+                return 1;
+            }
+            if (a.jobUrls.length > b.jobUrls.length) {
+                return -1;
+            }
+            return 0;
+        })
+
+        aggregatedUnits.sort((a,b) => {
+            if (a.counter < b.counter) {
+                return 1;
+            }
+            if (a.counter > b.counter) {
+                return -1;
+            }
+            return 0;
+        })
+
+        return { aggregatedStats, aggregatedUsers, aggregatedUnits };
     };
 
-    const { aggregatedStats, aggregatedUsers } = aggregateData(jobDetails);
+    const { aggregatedStats, aggregatedUsers, aggregatedUnits } = aggregateData(jobDetails);
 
     const handleUserClick = (user) => {
         setSelectedUser(user);
@@ -128,7 +162,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                 error ? <p>{error}</p> :
                 <>
                     <StyledTable aria-label="Statistical Data">
-                        <caption style={{ textAlign: 'center' }}>Bảng 1.Dữ liệu thống kê</caption>
+                        <caption style={{ textAlign: 'center' }}>Bảng 1. Chỉ số của các bài viết</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>STT</TableCell>
@@ -165,8 +199,29 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                         </TableBody>
                     </StyledTable>
 
+                    <StyledTable aria-label="Statistical Unit">
+                        <caption style={{ textAlign: 'center' }}>Bảng 2. Thống kê theo đơn vị</caption>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Hạng</TableCell>
+                                <TableCell align="center">Đơn vị</TableCell>
+                                <TableCell align="center">Tổng lượt tương tác</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {aggregatedUnits.map((data, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{index+1}</TableCell>
+                                    <TableCell align="center">{data.unit}</TableCell>
+                                    <TableCell align="center">{data.counter}</TableCell>
+
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </StyledTable>
+
                     <StyledTable aria-label="Non-Interacted Users">
-                        <caption style={{ textAlign: 'center' }}>Bảng 2.Người dùng chưa tương tác</caption>
+                        <caption style={{ textAlign: 'center' }}>Bảng 3. Người dùng chưa tương tác</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>STT</TableCell>
@@ -196,6 +251,8 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                             ))}
                         </TableBody>
                     </StyledTable>
+
+                    
 
                     <StyledModal
                         open={!!selectedUser}

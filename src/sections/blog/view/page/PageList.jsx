@@ -236,10 +236,10 @@ function PageList() {
                         <TableRow>
                             <TableCell align="center" style={{ width: '5%' }}>STT</TableCell>
                             <TableCell align="center" style={{ width: '10%' }}>Trạng thái</TableCell>
-                            <TableCell align="center" style={{ width: '10%' }}>Đơn vị</TableCell>
-                            <TableCell align="center" style={{ width: '15%' }}>Tên trang</TableCell>
-                            <TableCell align="center" style={{ width: '25%' }}>Đường dẫn</TableCell>
-                            <TableCell align="center" style={{ width: '35%' }}>Chức năng</TableCell>
+                            <TableCell align="center" style={{ width: '5%' }}>Đơn vị</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>Tên trang</TableCell>
+                            <TableCell align="center" style={{ width: '15%' }}>Đường dẫn</TableCell>
+                            <TableCell align="center" style={{ width: '55%' }}>Chức năng</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -256,7 +256,7 @@ function PageList() {
                                 </TableCell>
                                 <TableCell align="center"><Label color={'success'}>{row.team}</Label></TableCell>
                                 <TableCell align="center">{row.name}</TableCell>
-                                <TableCell align="center"><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
+                                <TableCell><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
                                 <TableCell align="center">
                                     <Switch
                                         checked={states[index]?.prioritized}
