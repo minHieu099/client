@@ -77,9 +77,10 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
     };
 
     const aggregateData = (jobs) => {
-        const aggregatedStats = [];
-        const aggregatedUsers = [];
-        const aggregatedUnits = [];
+        let aggregatedStats = [];
+        let aggregatedLazyUsers = [];
+        let aggregatedGoodUsers = [];
+        let aggregatedUnits = [];
 
         jobs.forEach((job, index) => {
             aggregatedStats.push({
@@ -89,11 +90,11 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
 
             job.chuatuongtac.forEach((user, idx) => {
                 const { name, url, unit } = parseInteraction(user, job.url);
-                const existingUserIndex = aggregatedUsers.findIndex(u => u.name === name);
+                const existingUserIndex = aggregatedLazyUsers.findIndex(u => u.name === name);
                 if (existingUserIndex !== -1) {
-                    aggregatedUsers[existingUserIndex].jobUrls.push(job.url);
+                    aggregatedLazyUsers[existingUserIndex].jobUrls.push(job.url);
                 } else {
-                    aggregatedUsers.push({
+                    aggregatedLazyUsers.push({
                         name,
                         url,
                         unit,
@@ -102,22 +103,52 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                 }
             });
 
-            Object.entries(job.thongke_donvi).forEach((data) => {
-                const existingUnitIndex = aggregatedUnits.findIndex(u => u.unit === data[0])
-
-                if (existingUnitIndex !== -1) {
-                    aggregatedUnits[existingUnitIndex].counter += data[1];
+            job.datuongtac.forEach((user, idx) => {
+                const { name, url, unit } = parseInteraction(user, job.url);
+                const existingUserIndex = aggregatedGoodUsers.findIndex(u => u.name === name);
+                if (existingUserIndex !== -1) {
+                    aggregatedGoodUsers[existingUserIndex].jobUrls.push(job.url);
                 } else {
-                    aggregatedUnits.push({
-                        unit: data[0],
-                        counter: data[1]
+                    aggregatedGoodUsers.push({
+                        name,
+                        url,
+                        unit,
+                        jobUrls: [job.url], // List of job URLs for each non-interacted user
                     });
                 }
+            });
 
-            })
+            if (job.thongke_donvi) {
+                Object.entries(job.thongke_donvi).forEach((data) => {
+                    const existingUnitIndex = aggregatedUnits.findIndex(u => u.unit === data[0])
+    
+                    if (existingUnitIndex !== -1) {
+                        aggregatedUnits[existingUnitIndex].counter += data[1];
+                    } else {
+                        aggregatedUnits.push({
+                            unit: data[0],
+                            counter: data[1]
+                        });
+                    }
+    
+                })
+            }
+            
         });
 
-        aggregatedUsers.sort((a,b) => {
+        // aggregatedLazyUsers.sort((a,b) => {
+        //     if (a.jobUrls.length < b.jobUrls.length) {
+        //         return 1;
+        //     }
+        //     if (a.jobUrls.length > b.jobUrls.length) {
+        //         return -1;
+        //     }
+        //     return 0;
+        // })
+
+        aggregatedLazyUsers = aggregatedLazyUsers.filter((user) => user.jobUrls.length == jobDetails.length)
+
+        aggregatedGoodUsers.sort((a,b) => {
             if (a.jobUrls.length < b.jobUrls.length) {
                 return 1;
             }
@@ -137,10 +168,20 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
             return 0;
         })
 
-        return { aggregatedStats, aggregatedUsers, aggregatedUnits };
+        aggregatedStats.sort((a,b) => {
+            if (a.tongdiem < b.tongdiem) {
+                return 1;
+            }
+            if (a.tongdiem > b.tongdiem) {
+                return -1;
+            }
+            return 0;
+        })
+
+        return { aggregatedStats: aggregatedStats.slice(0, 5), aggregatedGoodUsers: aggregatedGoodUsers.slice(0, 3), aggregatedLazyUsers, aggregatedUnits };
     };
 
-    const { aggregatedStats, aggregatedUsers, aggregatedUnits } = aggregateData(jobDetails);
+    const { aggregatedStats, aggregatedGoodUsers, aggregatedLazyUsers, aggregatedUnits } = aggregateData(jobDetails);
 
     const handleUserClick = (user) => {
         setSelectedUser(user);
@@ -162,10 +203,10 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                 error ? <p>{error}</p> :
                 <>
                     <StyledTable aria-label="Statistical Data">
-                        <caption style={{ textAlign: 'center' }}>Bảng 1. Chỉ số của các bài viết</caption>
+                        <caption style={{ textAlign: 'center' }}>Bảng 1. Top 5 tin bài tốt nhất</caption>
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
+                                {/* <TableCell>STT</TableCell> */}
                                 <TableCell>URL</TableCell>
                                 <TableCell align="center">Tổng tương tác</TableCell>
                                 <TableCell align="center">Thuộc đơn vị</TableCell>
@@ -182,7 +223,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                         <TableBody>
                             {aggregatedStats.map((job, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{job.index}</TableCell>
+                                    {/* <TableCell>{job.index}</TableCell> */}
                                     <TableCell>{job.url}</TableCell>
                                     <TableCell align="center">{job.tongtuongtac}</TableCell>
                                     <TableCell align="center">{job.tongtuongtacdonvi}</TableCell>
@@ -221,7 +262,39 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                     </StyledTable>
 
                     <StyledTable aria-label="Non-Interacted Users">
-                        <caption style={{ textAlign: 'center' }}>Bảng 3. Người dùng chưa tương tác</caption>
+                        <caption style={{ textAlign: 'center' }}>Bảng 3. Người dùng tương tác tốt</caption>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>STT</TableCell>
+                                <TableCell>Tên</TableCell>
+                                <TableCell>Liên kết cá nhân</TableCell>
+                                <TableCell>Đơn vị</TableCell>
+                                <TableCell>Tổng số bài đã tương tác</TableCell>
+                                <TableCell>Xem chi tiết</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {aggregatedGoodUsers.map((user, idx) => (
+                                <TableRow key={idx}>
+                                    <TableCell>{idx + 1}</TableCell>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.url}</TableCell>
+                                    <TableCell>{user.unit}</TableCell>
+                                    <TableCell>{user.jobUrls.length}</TableCell>
+                                    <TableCell>
+                                        <Tooltip title="Xem chi tiết">
+                                            <IconButton onClick={() => handleUserClick(user)}>
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </StyledTable>
+
+                    <StyledTable aria-label="Non-Interacted Users">
+                        <caption style={{ textAlign: 'center' }}>Bảng 4. Người dùng không tương tác</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>STT</TableCell>
@@ -233,7 +306,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {aggregatedUsers.map((user, idx) => (
+                            {aggregatedLazyUsers.map((user, idx) => (
                                 <TableRow key={idx}>
                                     <TableCell>{idx + 1}</TableCell>
                                     <TableCell>{user.name}</TableCell>
@@ -263,7 +336,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                         <StyledPaper>
                             {selectedUser && (
                                 <>
-                                    <h2>Chi tiết bài viết chưa tương tác của {selectedUser.name}</h2>
+                                    <h2>{selectedUser.name}</h2>
                                     <ul>
                                         {selectedUser.jobUrls.map((url, index) => (
                                             <li key={index}>{url}</li>
