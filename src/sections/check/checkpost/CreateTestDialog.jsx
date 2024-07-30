@@ -21,7 +21,7 @@ function CreateTaskDialog({ open, handleClose }) {
       await axios.post(
         'http://192.168.3.101:19999/api/crawl/post',
         {
-          targets: inputUrls.split(',').map((url) => url.trim()),
+          targets: inputUrls.split('\n').map((url) => url.trim()),
           description: description,
           quick_mode: quickMode,
         },
