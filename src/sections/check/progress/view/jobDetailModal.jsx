@@ -37,7 +37,9 @@ const StyledTable = styled(Table)({
     },
     '& caption': {
         marginBottom: '10px',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: '20px',
+        captionSide: 'top'
     }
 });
 
@@ -178,7 +180,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
             return 0;
         })
 
-        return { aggregatedStats: aggregatedStats.slice(0, 5), aggregatedGoodUsers: aggregatedGoodUsers.slice(0, 3), aggregatedLazyUsers, aggregatedUnits };
+        return { aggregatedStats: aggregatedStats.slice(0, 5), aggregatedGoodUsers: aggregatedGoodUsers.slice(0, 5), aggregatedLazyUsers, aggregatedUnits };
     };
 
     const { aggregatedStats, aggregatedGoodUsers, aggregatedLazyUsers, aggregatedUnits } = aggregateData(jobDetails);
@@ -203,7 +205,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                 error ? <p>{error}</p> :
                 <>
                     <StyledTable aria-label="Statistical Data">
-                        <caption style={{ textAlign: 'center' }}>Bảng 1. Top 5 tin bài tốt nhất</caption>
+                        <caption style={{ textAlign: 'center' }}>Top 5 tin bài tốt nhất</caption>
                         <TableHead>
                             <TableRow>
                                 {/* <TableCell>STT</TableCell> */}
@@ -224,7 +226,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                             {aggregatedStats.map((job, index) => (
                                 <TableRow key={index}>
                                     {/* <TableCell>{job.index}</TableCell> */}
-                                    <TableCell>{job.url}</TableCell>
+                                    <TableCell style={{ textAlign: 'left' }}>{job.url}</TableCell>
                                     <TableCell align="center">{job.tongtuongtac}</TableCell>
                                     <TableCell align="center">{job.tongtuongtacdonvi}</TableCell>
                                     <TableCell align="center">{job.tongtuongtackhongthuocdonvi}</TableCell>
@@ -241,7 +243,7 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                     </StyledTable>
 
                     <StyledTable aria-label="Statistical Unit">
-                        <caption style={{ textAlign: 'center' }}>Bảng 2. Thống kê theo đơn vị</caption>
+                        <caption style={{ textAlign: 'center' }}>Thống kê theo đơn vị</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Hạng</TableCell>
@@ -262,12 +264,12 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                     </StyledTable>
 
                     <StyledTable aria-label="Non-Interacted Users">
-                        <caption style={{ textAlign: 'center' }}>Bảng 3. Người dùng tương tác tốt</caption>
+                        <caption style={{ textAlign: 'center' }}>Top 5 thành viên tương tác tốt</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>STT</TableCell>
-                                <TableCell>Tên</TableCell>
-                                <TableCell>Liên kết cá nhân</TableCell>
+                                <TableCell style={{ textAlign: 'left' }}>Tên</TableCell>
+                                <TableCell style={{ textAlign: 'left' }}>Liên kết cá nhân</TableCell>
                                 <TableCell>Đơn vị</TableCell>
                                 <TableCell>Tổng số bài đã tương tác</TableCell>
                                 <TableCell>Xem chi tiết</TableCell>
@@ -277,8 +279,8 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                             {aggregatedGoodUsers.map((user, idx) => (
                                 <TableRow key={idx}>
                                     <TableCell>{idx + 1}</TableCell>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.url}</TableCell>
+                                    <TableCell style={{ textAlign: 'left' }}>{user.name}</TableCell>
+                                    <TableCell style={{ textAlign: 'left' }}>{user.url}</TableCell>
                                     <TableCell>{user.unit}</TableCell>
                                     <TableCell>{user.jobUrls.length}</TableCell>
                                     <TableCell>
@@ -294,12 +296,12 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                     </StyledTable>
 
                     <StyledTable aria-label="Non-Interacted Users">
-                        <caption style={{ textAlign: 'center' }}>Bảng 4. Người dùng không tương tác</caption>
+                        <caption style={{ textAlign: 'center' }}>Thành viên chưa tương tác</caption>
                         <TableHead>
                             <TableRow>
                                 <TableCell>STT</TableCell>
-                                <TableCell>Tên</TableCell>
-                                <TableCell>Liên kết cá nhân</TableCell>
+                                <TableCell style={{ textAlign: 'left' }}>Tên</TableCell>
+                                <TableCell style={{ textAlign: 'left' }}>Liên kết cá nhân</TableCell>
                                 <TableCell>Đơn vị</TableCell>
                                 <TableCell>Tổng số bài chưa tương tác</TableCell>
                                 <TableCell>Xem chi tiết</TableCell>
@@ -309,8 +311,8 @@ const JobDetailsModal = ({ jobId, open, handleClose }) => {
                             {aggregatedLazyUsers.map((user, idx) => (
                                 <TableRow key={idx}>
                                     <TableCell>{idx + 1}</TableCell>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.url}</TableCell>
+                                    <TableCell style={{ textAlign: 'left' }}>{user.name}</TableCell>
+                                    <TableCell style={{ textAlign: 'left' }}>{user.url}</TableCell>
                                     <TableCell>{user.unit}</TableCell>
                                     <TableCell>{user.jobUrls.length}</TableCell>
                                     <TableCell>
