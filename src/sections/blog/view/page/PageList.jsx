@@ -235,34 +235,39 @@ function PageList() {
                     <TableHead>
                         <TableRow>
                             <TableCell align="center" style={{ width: '5%' }}>STT</TableCell>
-                            <TableCell align="center" style={{ width: '10%' }}>Trạng thái</TableCell>
-                            <TableCell align="center" style={{ width: '5%' }}>Đơn vị</TableCell>
-                            <TableCell align="center" style={{ width: '10%' }}>Tên trang</TableCell>
-                            <TableCell align="center" style={{ width: '15%' }}>Đường dẫn</TableCell>
-                            <TableCell align="center" style={{ width: '55%' }}>Chức năng</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>Đơn vị</TableCell>
+                            <TableCell align="center" style={{ width: '15%' }}>Tên trang</TableCell>
+                            <TableCell align="center" style={{ width: '30%' }}>Đường dẫn</TableCell>
+                            <TableCell align="center" style={{ width: '10%' }}>Giám sát</TableCell>
+                            <TableCell align="center" style={{ width: '30%' }}>Chức năng</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {pageData.map((row, index) => (
                             <TableRow key={row._id}>
                                 <TableCell align="center">{index + 1}</TableCell>
-                                <TableCell align="center">
-                                    <Chip
-                                        label={states[index].prioritized ? "Ưu tiên" : "Không ưu tiên"}
-                                        color={states[index].prioritized ? 'primary' : 'default'}
-                                        variant="outlined"
-                                        sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}
-                                    />
-                                </TableCell>
+                                
                                 <TableCell align="center"><Label color={'success'}>{row.team}</Label></TableCell>
                                 <TableCell align="center">{row.name}</TableCell>
                                 <TableCell><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></TableCell>
                                 <TableCell align="center">
+                                    {/* <Chip
+                                        label={states[index].prioritized ? "Ưu tiên" : "Không ưu tiên"}
+                                        color={states[index].prioritized ? 'primary' : 'default'}
+                                        variant="outlined"
+                                        sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}
+                                    /> */}
+                                    
                                     <Switch
                                         checked={states[index]?.prioritized}
                                         onChange={() => OnOff(row._id)}
                                         inputProps={{ 'aria-label': 'controlled' }}
                                     />
+                                    
+                                    
+                                </TableCell>
+                                <TableCell align="center">
+                                    
                                     <Button
                                         variant="contained"
                                         color="primary"
