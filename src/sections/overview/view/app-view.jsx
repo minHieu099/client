@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
+import Stack from '@mui/material/Stack';
+import Iconify from 'src/components/iconify';
+import { getToken } from 'src/routes/auth';
+import AppWidgetSummary from '../app-widget-summary';
+import PageFollowers from '../page-follower';
 import PointInMonth from '../point-in-month';
 import PointInWeek from '../point-in-week';
-import PostInWeek from '../post-in-week';
 import PostInMonth from '../post-in-month';
-import PageFollowers from '../page-follower';
-import AppWidgetSummary from '../app-widget-summary';
-import { getFullname, getToken } from 'src/routes/auth';
-import label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Stack from '@mui/material/Stack';
+import PostInWeek from '../post-in-week';
 
 const apiEndpoint = 'http://192.168.3.101:19999/api/stats';
-const token = getToken();
 
 export default function AppView() {
   const [data, setData] = useState(null);

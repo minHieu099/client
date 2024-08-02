@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Iconify from 'src/components/iconify';
 import Logo from 'src/components/logo';
 import { useRouter } from 'src/routes/hooks';
@@ -18,7 +17,6 @@ import { login } from '../../routes/auth';
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
-  const navigate = useNavigate();
   const theme = useTheme();
   const router = useRouter();
 
